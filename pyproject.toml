@@ -9,11 +9,26 @@ license = "GNU v3"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    main
-    api
-    scraper
-    dev
+    "python-dotenv (>=1.2.2,<2.0.0)"
+    
 ]
+[dependency-groups]
+api = [
+
+    ]
+scraper = [
+
+    ]
+dev = [
+
+    ]
+test = [
+    "pytest (>=6.0.0,<7.0.0)",
+    "pytest-mock",
+    ]
+
+[tool.poetry]
+package-mode = false
 
 
 [build-system]
