@@ -1,5 +1,5 @@
 [project]
-name = "trackit"
+name = "trackit_backend"
 version = "0.1.0"
 description = "This is the Backend of the TrackIT project"
 authors = [
