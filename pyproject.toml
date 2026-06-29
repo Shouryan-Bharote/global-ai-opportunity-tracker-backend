@@ -19,6 +19,7 @@ api = [
 
     ]
 scraper = [
+    "patchright (>=1.60.1,<2.0.0)"
 
     ]
 dev = [
