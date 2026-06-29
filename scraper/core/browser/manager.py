@@ -1,17 +1,17 @@
 class BrowserManager:
+    def __init__(self):
+        self._playwright = None
+        self._browser = None
+        self._context = None
 
-    async def start(self)
+    async def start(self) -> None:
+        ...
 
-    async def close(self)
+    async def close(self) -> None:
+        ...
 
-    async def new_context(self)
+    async def new_page(self):
+        ...
 
-    async def new_page(self, context=None)
-
-    async def take_screenshot(...)
-
-    def is_running(self)
-
-    def context_count(self)
-
-    def page_count(self)
+    def is_running(self) -> bool:
+        ...
