@@ -33,7 +33,6 @@ class Settings(BaseSettings):
     # Browser
     # ======================
 
-    headless: bool = True
 
     # ======================
     # Pydantic Configuration

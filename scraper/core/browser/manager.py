@@ -3,11 +3,11 @@ from patchright.async_api import (
     BrowserContext,
     Page,
     Playwright,
-    async_playwright,
 )
 
+from scraper.core.browser.factory import BrowserFactory
+from scraper.core.browser.models import BrowserLaunchOptions
 from scraper.core.exceptions import BrowserError
-from shared.config import settings
 from shared.logger import logger
 
 
@@ -16,7 +16,19 @@ class BrowserManager:
     Manages the Patchright browser lifecycle.
     """
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        options: BrowserLaunchOptions | None = None,
+    ) -> None:
+        """
+        Initialize the BrowserManager.
+
+        Args:
+            options: Browser launch configuration.
+        """
+
+        self._options = options or BrowserLaunchOptions()
+
         self._playwright: Playwright | None = None
         self._browser: Browser | None = None
         self._context: BrowserContext | None = None
@@ -24,10 +36,9 @@ class BrowserManager:
     async def start(self) -> None:
         """
         Start Patchright and launch the browser.
-        
+
         Raises:
             BrowserError: If the browser fails to launch.
-        
         """
 
         if self.is_running():
@@ -36,13 +47,17 @@ class BrowserManager:
 
         logger.info("Starting browser...")
 
-        self._playwright = await async_playwright().start()
+        self._playwright = await BrowserFactory.start_playwright()
 
-        self._browser = await self._playwright.chromium.launch(
-            headless=settings.headless,
+        self._browser = await BrowserFactory.launch_browser(
+            self._playwright,
+            self._options,
         )
 
-        self._context = await self._browser.new_context()
+        self._context = await BrowserFactory.create_context(
+            self._browser,
+            self._options,
+        )
 
         logger.info("Browser started successfully.")
 
@@ -69,13 +84,13 @@ class BrowserManager:
 
         logger.info("Closing browser...")
 
-        if self._context:
+        if self._context is not None:
             await self._context.close()
 
-        if self._browser:
+        if self._browser is not None:
             await self._browser.close()
 
-        if self._playwright:
+        if self._playwright is not None:
             await self._playwright.stop()
 
         self._context = None
@@ -89,8 +104,4 @@ class BrowserManager:
         Returns True if the browser is currently running.
         """
 
-        return (
-            self._playwright is not None
-            and self._browser is not None
-            and self._context is not None
-        )
+        return self._browser is not None

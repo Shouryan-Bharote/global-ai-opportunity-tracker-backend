@@ -1,11 +1,17 @@
 import asyncio
 
 from scraper.core.browser import BrowserManager
+from scraper.core.browser.models import BrowserLaunchOptions
 from shared.logger import logger
 
 
 async def main() -> None:
-    browser = BrowserManager()
+    options = BrowserLaunchOptions(
+    headless=False,
+    slow_mo=500,
+    )
+
+    browser = BrowserManager(options)
 
     try:
         await browser.start()
