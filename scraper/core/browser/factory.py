@@ -1,3 +1,5 @@
+# factory.py
+
 from patchright.async_api import (
     Browser,
     BrowserContext,
@@ -6,7 +8,6 @@ from patchright.async_api import (
 )
 
 from scraper.core.browser.models import BrowserLaunchOptions
-
 
 class BrowserFactory:
     """

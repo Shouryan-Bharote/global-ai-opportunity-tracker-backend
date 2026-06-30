@@ -64,6 +64,9 @@ class BrowserManager:
     async def new_page(self) -> Page:
         """
         Create a new page from the default browser context.
+
+        Raises:
+            BrowserError: If the browser has not been started.
         """
 
         if self._context is None:
@@ -98,6 +101,34 @@ class BrowserManager:
         self._playwright = None
 
         logger.info("Browser closed successfully.")
+
+    @property
+    def browser(self) -> Browser:
+        """
+        Return the active browser instance.
+
+        Raises:
+            BrowserError: If the browser has not been started.
+        """
+
+        if self._browser is None:
+            raise BrowserError("Browser has not been started.")
+
+        return self._browser
+
+    @property
+    def context(self) -> BrowserContext:
+        """
+        Return the active browser context.
+
+        Raises:
+            BrowserError: If the browser has not been started.
+        """
+
+        if self._context is None:
+            raise BrowserError("Browser has not been started.")
+
+        return self._context
 
     def is_running(self) -> bool:
         """

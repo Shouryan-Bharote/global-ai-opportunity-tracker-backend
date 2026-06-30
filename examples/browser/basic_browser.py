@@ -1,3 +1,5 @@
+# basic_browser
+
 import asyncio
 
 from scraper.core.browser import BrowserManager
