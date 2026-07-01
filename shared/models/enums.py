@@ -73,6 +73,25 @@ class Currency(StrEnum):
     CAD = auto()
     OTHER = auto()
 
+class OpportunitySource(StrEnum):
+    """Supported sources of opportunities."""
+
+    UNSTOP = auto()
+    DEVPOST = auto()
+    KAGGLE = auto()
+    HACK2SKILL = auto()
+    DEVFOLIO = auto()
+    MLH = auto()
+    GOOGLE = auto()
+    MICROSOFT = auto()
+    GITHUB = auto()
+    HUGGINGFACE = auto()
+    AI_PLANET = auto()
+    ZINDI = auto()
+    DRIVEN_DATA = auto()
+    TOPCODER = auto()
+    OTHER = auto()
+
 __all__ = [
     "OpportunityType",
     "OpportunityStatus",
@@ -80,4 +99,5 @@ __all__ = [
     "DifficultyLevel",
     "PrizeType",
     "Currency",
+    "OpportunitySource",
 ]
