@@ -10,8 +10,10 @@ from shared.models.location import Location
 from shared.models.organizer import Organizer
 from shared.models.prize import Prize
 from shared.models.timeline import Timeline
+from shared.models.metadata import Metadata
 
 from datetime import datetime
+
 
 class Opportunity(BaseModel):
     """Represents a generic AI/ML opportunity (hackathon, grant, internship, etc.)."""
@@ -140,7 +142,7 @@ class Opportunity(BaseModel):
         None,
         description="Internal notes or additional information.",
     )
-    
+
     scraped_at: datetime | None = Field(
         None,
         description="The timestamp when this opportunity was last scraped.",
@@ -149,6 +151,11 @@ class Opportunity(BaseModel):
     last_seen_at: datetime | None = Field(
         None,
         description="The timestamp when this opportunity was last observed on the source platform.",
+    )
+
+    metadata: Metadata | None = Field(
+        default=None,
+        description="Additional metadata collected during scraping.",
     )
 
 
