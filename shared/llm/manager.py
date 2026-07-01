@@ -1,4 +1,10 @@
+from typing import TypeVar
+
+from pydantic import BaseModel
+
+from shared.logger import logger
 from shared.llm.client import LiteLLMClient
+from shared.llm.exceptions import LLMValidationError
 from shared.llm.models import (
     LLMProvider,
     LLMRequest,
@@ -10,11 +16,14 @@ from shared.llm.prompt_builder import PromptBuilder
 from shared.llm.selector_profile import SelectorProfile
 from shared.llm.validator import SelectorProfileValidator
 
+T = TypeVar("T", bound=BaseModel)
+
 
 class LLMManager:
     """Coordinates all LLM operations."""
 
     def __init__(self, client: LiteLLMClient) -> None:
+        """Initializes the LLM manager."""
         self._client = client
 
     async def generate_selector_profile(
@@ -27,7 +36,13 @@ class LLMManager:
         html: str,
         fields: list[str],
     ) -> SelectorProfile:
-        """Generate a selector profile for a webpage."""
+        """Generates a selector profile for a webpage."""
+
+        logger.info(
+            "Generating selector profile for website=%s page_type=%s",
+            website,
+            page_type,
+        )
 
         prompt = PromptBuilder.build(
             task=LLMTask.SELECTOR_GENERATION,
@@ -37,23 +52,31 @@ class LLMManager:
             fields=fields,
         )
 
-        response = await self._generate(
+        response = await self._execute_request(
             task=LLMTask.SELECTOR_GENERATION,
             prompt=prompt,
             provider=provider,
             model=model,
         )
 
-        profile = LLMParser.parse(
+        if not response.content.strip():
+            raise LLMValidationError("LLM returned an empty response.")
+
+        profile = self._parse_response(
             response.content,
             SelectorProfile,
         )
 
         SelectorProfileValidator.validate(profile)
 
+        logger.info(
+            "Successfully generated selector profile for website=%s",
+            website,
+        )
+
         return profile
 
-    async def _generate(
+    async def _execute_request(
         self,
         *,
         task: LLMTask,
@@ -61,7 +84,7 @@ class LLMManager:
         provider: LLMProvider,
         model: str,
     ) -> LLMResponse:
-        """Send a request to the configured LLM."""
+        """Creates and sends an LLM request."""
 
         request = LLMRequest(
             task=task,
@@ -71,3 +94,12 @@ class LLMManager:
         )
 
         return await self._client.generate(request)
+
+    @staticmethod
+    def _parse_response(
+        content: str,
+        model: type[T],
+    ) -> T:
+        """Parses an LLM response into the specified Pydantic model."""
+
+        return LLMParser.parse(content, model)
