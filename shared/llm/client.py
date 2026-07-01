@@ -17,40 +17,28 @@ from shared.llm.exceptions import (
     LLMTimeoutError,
     LLMValidationError,
 )
-from shared.llm.models import LLMRequest, LLMResponse, TokenUsage
+from shared.llm.models import (
+    LLMRequest,
+    LLMResponse,
+    TokenUsage,
+)
+from shared.llm.providers import Providers
 from shared.logger import logger
 
 
 class LiteLLMClient:
-    """Client for interacting with LLM providers using the LiteLLM library."""
+    """Client for interacting with LLM providers using LiteLLM."""
 
     async def generate(self, request: LLMRequest) -> LLMResponse:
-        """Generate a response from an LLM provider.
+        """Generate a response from an LLM provider."""
 
-        Args:
-            request: The request to send to the LLM.
+        self._validate_request(request)
 
-        Returns:
-            The generated LLM response.
-
-        Raises:
-            LLMValidationError: If the request is invalid.
-            LLMAuthenticationError: If authentication fails.
-            LLMRateLimitError: If the provider rate limit is exceeded.
-            LLMTimeoutError: If the request times out.
-            LLMProviderError: If the provider returns an API error.
-            LLMError: For any other unexpected errors.
-        """
-
-        if request.model is None:
-            raise LLMValidationError("Request model must be provided.")
-
-        if request.provider is None:
-            raise LLMValidationError("Request provider must be provided.")
+        provider_config = Providers.get(request.provider)
 
         logger.debug(
             "Sending LLM request (provider=%s, model=%s)",
-            request.provider.value,
+            provider_config.provider_name,
             request.model,
         )
 
@@ -59,7 +47,8 @@ class LiteLLMClient:
         try:
             response: ModelResponse = await acompletion(
                 model=request.model,
-                custom_llm_provider=request.provider.value,
+                custom_llm_provider=provider_config.provider_name,
+                api_key=Providers.api_key(request.provider),
                 messages=[
                     {
                         "role": "user",
@@ -73,28 +62,28 @@ class LiteLLMClient:
         except AuthenticationError as e:
             logger.exception(
                 "Authentication failed for provider=%s",
-                request.provider.value,
+                provider_config.provider_name,
             )
             raise LLMAuthenticationError(str(e)) from e
 
         except RateLimitError as e:
             logger.exception(
                 "Rate limit exceeded for provider=%s",
-                request.provider.value,
+                provider_config.provider_name,
             )
             raise LLMRateLimitError(str(e)) from e
 
         except LiteLLMTimeout as e:
             logger.exception(
                 "Request timed out for provider=%s",
-                request.provider.value,
+                provider_config.provider_name,
             )
             raise LLMTimeoutError(str(e)) from e
 
         except APIError as e:
             logger.exception(
                 "Provider API error for provider=%s",
-                request.provider.value,
+                provider_config.provider_name,
             )
             raise LLMProviderError(str(e)) from e
 
@@ -108,24 +97,14 @@ class LiteLLMClient:
 
         elapsed_time = time.perf_counter() - start_time
 
-        usage: TokenUsage | None = None
-        if response.usage:
-            usage = TokenUsage(
-                prompt_tokens=response.usage.prompt_tokens or 0,
-                completion_tokens=response.usage.completion_tokens or 0,
-                total_tokens=response.usage.total_tokens or 0,
-            )
-
-        token_count: int | str = (
-            usage.total_tokens if usage is not None else "unknown"
-        )
+        usage = self._build_token_usage(response)
 
         logger.debug(
             "LLM request completed (provider=%s, model=%s, time=%.2fs, total_tokens=%s)",
-            request.provider.value,
+            provider_config.provider_name,
             request.model,
             elapsed_time,
-            token_count,
+            usage.total_tokens if usage else "unknown",
         )
 
         return LLMResponse(
@@ -134,4 +113,34 @@ class LiteLLMClient:
             model=request.model,
             usage=usage,
             response_time=elapsed_time,
+        )
+
+    @staticmethod
+    def _validate_request(request: LLMRequest) -> None:
+        """Validates an LLM request before execution."""
+
+        if request.provider is None:
+            raise LLMValidationError("Request provider must be provided.")
+
+        if request.model is None:
+            raise LLMValidationError("Request model must be provided.")
+
+        if not Providers.has_api_key(request.provider):
+            raise LLMValidationError(
+                f"No API key configured for provider '{request.provider.value}'."
+            )
+
+    @staticmethod
+    def _build_token_usage(
+        response: ModelResponse,
+    ) -> TokenUsage | None:
+        """Builds a TokenUsage object from a LiteLLM response."""
+
+        if response.usage is None:
+            return None
+
+        return TokenUsage(
+            prompt_tokens=response.usage.prompt_tokens or 0,
+            completion_tokens=response.usage.completion_tokens or 0,
+            total_tokens=response.usage.total_tokens or 0,
         )

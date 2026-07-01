@@ -69,6 +69,11 @@ class LLMManager:
 
         SelectorProfileValidator.validate(profile)
 
+        logger.debug(
+            "Selector profile validation succeeded for website=%s",
+            website,
+        )
+
         logger.info(
             "Successfully generated selector profile for website=%s",
             website,
@@ -86,6 +91,13 @@ class LLMManager:
     ) -> LLMResponse:
         """Creates and sends an LLM request."""
 
+        logger.debug(
+            "Executing LLM task=%s provider=%s model=%s",
+            task.value,
+            provider.value,
+            model,
+        )
+
         request = LLMRequest(
             task=task,
             prompt=prompt,
@@ -101,5 +113,10 @@ class LLMManager:
         model: type[T],
     ) -> T:
         """Parses an LLM response into the specified Pydantic model."""
+
+        logger.debug(
+            "Parsing LLM response into %s",
+            model.__name__,
+        )
 
         return LLMParser.parse(content, model)

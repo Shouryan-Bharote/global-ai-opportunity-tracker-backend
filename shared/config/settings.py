@@ -22,6 +22,7 @@ class Settings(BaseSettings):
 
     google_ai_api_key: str = ""
     groq_api_key: str = ""
+    openrouter_api_key: str = ""
 
     # ======================
     # Future Database
