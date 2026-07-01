@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from enum import Enum
-from typing import TypeVar
+from typing import NoReturn, TypeVar
+from pydantic import BaseModel
 
 from shared.logger import get_logger
 from shared.models.enums import DifficultyLevel, OpportunityStatus, OpportunityType
@@ -17,6 +18,7 @@ from scraper.parsers.parser_utils import ParserUtils
 
 logger = get_logger(__name__)
 
+T = TypeVar("T", bound=BaseModel)
 E = TypeVar("E", bound=Enum)
 
 
@@ -46,9 +48,21 @@ class OpportunityParser(BaseParser[Opportunity]):
         raw_data_mapping: Mapping[str, object] = raw_data
 
         # Required nested models
-        organizer = self._parse_organizer(raw_data_mapping)
-        location = self._parse_location(raw_data_mapping)
-        timeline = self._parse_timeline(raw_data_mapping)
+        organizer = self._parse_required_model(
+            raw_data_mapping,
+            "organizer",
+            Organizer,
+        )
+        location = self._parse_required_model(
+            raw_data_mapping,
+            "location",
+            Location,
+        )
+        timeline = self._parse_required_model(
+            raw_data_mapping,
+            "timeline",
+            Timeline,
+        )
 
         # Enum fields
         opportunity_type = self._parse_enum(
@@ -110,8 +124,8 @@ class OpportunityParser(BaseParser[Opportunity]):
 
         # Collections
         prizes = self._parse_prizes(raw_data_mapping)
-        tags = ParserUtils.get_list(self._get(raw_data_mapping, "tags"))
-        eligibility = ParserUtils.get_list(self._get(raw_data_mapping, "eligibility"))
+        tags = self._parse_list(raw_data_mapping, "tags")
+        eligibility = self._parse_list(raw_data_mapping, "eligibility")
 
         # Metadata
         metadata = self._parse_metadata(raw_data_mapping)
@@ -195,13 +209,13 @@ class OpportunityParser(BaseParser[Opportunity]):
         """
         return data
 
-    def _postprocess(self, opportunity: Opportunity) -> Opportunity:
-        """Postprocess the parsed Opportunity.
+    # def _postprocess(self, opportunity: Opportunity) -> Opportunity:
+    #     """Postprocess the parsed Opportunity.
 
-        Canonical behavior returns the Opportunity unchanged.
-        Subclasses may override to perform site-specific normalization steps.
-        """
-        return opportunity
+    #     Canonical behavior returns the Opportunity unchanged.
+    #     Subclasses may override to perform site-specific normalization steps.
+    #     """
+    #     return opportunity
 
     def _get(self, raw_data: Mapping[str, object], key: str) -> object:
         """Gets a value from the raw mapping using ParserUtils.safe_get()."""
@@ -243,11 +257,10 @@ class OpportunityParser(BaseParser[Opportunity]):
 
         if required:
             if value is None or value == "":
-                logger.warning(
-                    "OpportunityParser: validation failure: field=%s",
-                    key,
+                self._raise_required_field_error(
+                    field=key,
+                    message=f"Missing or invalid required string field: {key}",
                 )
-                raise ValueError(f"Missing or invalid required string field: {key}")
             return value
 
         return value
@@ -276,11 +289,10 @@ class OpportunityParser(BaseParser[Opportunity]):
 
         if required:
             if value is None or value == "":
-                logger.warning(
-                    "OpportunityParser: validation failure: field=%s",
-                    key,
+                self._raise_required_field_error(
+                    field=key,
+                    message=f"Missing or invalid required URL field: {key}",
                 )
-                raise ValueError(f"Missing or invalid required URL field: {key}")
             return value
 
         return value
@@ -296,48 +308,39 @@ class OpportunityParser(BaseParser[Opportunity]):
         """Parses an enum value by name/value with normalization."""
         value = ParserUtils.get_enum(self._get(raw_data, key), enum_type)
         if required and value is None:
-            logger.warning(
-                "OpportunityParser: validation failure: field=%s",
-                key,
+            self._raise_required_field_error(
+                field=key,
+                message=f"Missing or invalid required enum field: {key}",
             )
-            raise ValueError(f"Missing or invalid required enum field: {key}")
         return value
 
-    def _parse_organizer(self, raw_data: Mapping[str, object]) -> Organizer:
-        """Parses the required organizer nested model."""
-        organizer_data = self._get(raw_data, "organizer")
-        organizer = ParserUtils.build_model(organizer_data, Organizer)
-        if organizer is None:
-            logger.warning(
-                "OpportunityParser: validation failure: field=%s",
-                "organizer",
-            )
-            raise ValueError("Missing or invalid required field: organizer")
-        return organizer
+    def _raise_required_field_error(self, field: str, message: str) -> NoReturn:
+        """Logs and raises a required-field validation error."""
+        logger.warning(
+            "OpportunityParser: validation failure: field=%s",
+            field,
+        )
+        raise ValueError(message)
 
-    def _parse_location(self, raw_data: Mapping[str, object]) -> Location:
-        """Parses the required location nested model."""
-        location_data = self._get(raw_data, "location")
-        location = ParserUtils.build_model(location_data, Location)
-        if location is None:
-            logger.warning(
-                "OpportunityParser: validation failure: field=%s",
-                "location",
+    def _parse_required_model(
+        self,
+        raw_data: Mapping[str, object],
+        key: str,
+        model: type[T],
+    ) -> T:
+        """Parses a required nested model via ParserUtils.build_model()."""
+        data = self._get(raw_data, key)
+        parsed = ParserUtils.build_model(data, model)
+        if parsed is None:
+            self._raise_required_field_error(
+                field=key,
+                message=f"Missing or invalid required field: {key}",
             )
-            raise ValueError("Missing or invalid required field: location")
-        return location
+        return parsed
 
-    def _parse_timeline(self, raw_data: Mapping[str, object]) -> Timeline:
-        """Parses the required timeline nested model."""
-        timeline_data = self._get(raw_data, "timeline")
-        timeline = ParserUtils.build_model(timeline_data, Timeline)
-        if timeline is None:
-            logger.warning(
-                "OpportunityParser: validation failure: field=%s",
-                "timeline",
-            )
-            raise ValueError("Missing or invalid required field: timeline")
-        return timeline
+    def _parse_list(self, raw_data: Mapping[str, object], key: str) -> list[str]:
+        """Parses an optional list[str] field into a list (empty if missing)."""
+        return ParserUtils.get_list(self._get(raw_data, key))
 
     def _parse_prizes(self, raw_data: Mapping[str, object]) -> list[Prize]:
         """Parses prizes list using nested model building."""
