@@ -1,4 +1,4 @@
-# selector_profile.py
+# shared/llm/selector_profile.py
 
 from datetime import UTC, datetime
 from enum import StrEnum
