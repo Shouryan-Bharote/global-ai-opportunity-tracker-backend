@@ -1,11 +1,18 @@
+# selector_profile.py
+
 from datetime import UTC, datetime
 from enum import StrEnum
+
+from typing import Any
+
+
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
+
 class SelectorType(StrEnum):
-    """Supported selector types."""
+    """Supported selector locator types."""
 
     CSS = "css"
     XPATH = "xpath"
@@ -17,6 +24,10 @@ class ExtractionType(StrEnum):
     TEXT = "text"
     ATTRIBUTE = "attribute"
     HTML = "html"
+    LIST = "list"
+    TABLE = "table"
+    JSON = "json"
+
 
 
 class Selector(BaseModel):
@@ -40,6 +51,16 @@ class Selector(BaseModel):
         description="Confidence score assigned by the LLM."
     )
 
+    wait_for: bool = Field(
+        default=False,
+        description="Whether the engine should wait for this selector before extracting."
+    )
+    timeout: int | None = Field(
+        default=None,
+        description="Optional selector wait timeout in milliseconds."
+    )
+
+
 
 class ExtractionField(BaseModel):
     """Represents a single field to extract from a webpage."""
@@ -57,6 +78,10 @@ class ExtractionField(BaseModel):
         default=True,
         description="Whether this field is required."
     )
+    default: object | None = Field(
+        default=None,
+        description="Fallback value when extraction fails."
+    )
     extraction_type: ExtractionType = Field(
         description="How the data should be extracted."
     )
@@ -67,6 +92,15 @@ class ExtractionField(BaseModel):
     selectors: list[Selector] = Field(
         description="Ordered list of selectors from highest to lowest priority."
     )
+
+    def primary_selector(self) -> Selector:
+        """Return the selector with the highest priority (lowest priority int)."""
+        return sorted(self.selectors, key=lambda s: s.priority)[0]
+
+    def ordered_selectors(self) -> list[Selector]:
+        """Return selectors ordered by priority (lowest priority int first)."""
+        return sorted(self.selectors, key=lambda s: s.priority)
+
 
 
 class GenerationMetadata(BaseModel):
