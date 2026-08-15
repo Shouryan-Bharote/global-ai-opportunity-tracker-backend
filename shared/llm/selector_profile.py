@@ -5,9 +5,9 @@ from enum import StrEnum
 
 from typing import Any
 
-
-
 from pydantic import BaseModel, ConfigDict, Field
+
+from shared.models.enums import OpportunityField
 
 
 
@@ -67,8 +67,8 @@ class ExtractionField(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    name: str = Field(
-        description="The name of the field."
+    name: OpportunityField = Field(
+        description="The canonical opportunity field to extract."
     )
     description: str | None = Field(
         default=None,

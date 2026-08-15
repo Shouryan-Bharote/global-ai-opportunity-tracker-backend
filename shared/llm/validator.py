@@ -42,10 +42,7 @@ class SelectorProfileValidator:
         field_names: set[str] = set()
 
         for field in profile.fields:
-            field_name = field.name.strip()
-
-            if not field_name:
-                raise LLMValidationError("Field name cannot be empty.")
+            field_name = field.name.value
 
             if field_name in field_names:
                 raise LLMValidationError(
