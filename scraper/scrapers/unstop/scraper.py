@@ -21,8 +21,20 @@ from shared.models.opportunity import Opportunity
 
 logger = get_logger(__name__)
 
-# The Unstop listing page for hackathons / competitions
-_LISTING_URL = "https://unstop.com/hackathons"
+# Target AI-related categories on Unstop
+DEFAULT_AI_CATEGORIES = [
+    "artificial-intelligence-machine-learning",
+    "data-analytics",
+    "data-science",
+]
+
+# Target event types on Unstop
+DEFAULT_EVENT_TYPES = [
+    "hackathons",
+    "competitions",
+    "quizzes",
+    "conferences",
+]
 
 # Fields we ask the LLM to generate selectors for (card-level extraction)
 _TARGET_FIELDS: list[str] = [
@@ -37,7 +49,6 @@ _TARGET_FIELDS: list[str] = [
 ]
 
 # Real Unstop card selectors (discovered from live page DOM inspection)
-# Cards are <a> elements with class 'item opp_XXXXX position-relative'
 _CARD_SELECTORS = [
     "a[class*='item'][class*='opp_']",
     "a.item.position-relative",
@@ -51,110 +62,143 @@ _CARD_WAIT_TIMEOUT = 10_000
 # Pause between pagination steps to avoid rate limiting
 _PAGINATION_DELAY_S = 2.0
 
-# CSS selector for the "Load More" button
-_LOAD_MORE_SELECTOR = "button[class*='load-more'], button[class*='see-more'], a[class*='load-more']"
+# Selectors for Unstop's Angular <app-pagination> control
+_NEXT_PAGE_SELECTORS = [
+    "app-pagination li.right-arrow:not(.disabled)",
+    "div.pagination li.right-arrow:not(.disabled)",
+    "li.right-arrow:not(.disabled)",
+    "button[class*='load-more']",
+]
 
-# Maximum pages to scrape in one run (safety limit)
+# Maximum pages to scrape per event type (safety limit)
 _MAX_PAGES = 5
 
 
 class UnstopScraper(BaseScraper):
-    """Concrete scraper for unstop.com opportunity listings.
+    """Concrete scraper for unstop.com AI/ML opportunity listings.
 
-    Responsibilities:
-    - Navigate to the Unstop listing page.
-    - Handle cookie consent dismissal.
-    - Locate opportunity cards on the page.
-    - Use LLMManager to generate/load a SelectorProfile for card data.
-    - Extract raw field dictionaries via SelectorParser.
-    - Parse raw dicts into Opportunity models via OpportunityParser.
-    - Handle "Load More" pagination up to _MAX_PAGES.
-
-    This class must NOT contain parsing logic, HTML selectors for field
-    extraction, or any LLM prompt engineering — that lives in SelectorParser
-    and LLMManager respectively.
+    Supports category-filtered URLs across multiple event types (hackathons,
+    competitions, quizzes, etc.) and deduplicates parsed opportunities.
     """
 
     def __init__(
         self,
         options: BrowserLaunchOptions | None = None,
         provider: LLMProvider = LLMProvider.GROQ,
+        event_types: list[str] | None = None,
+        categories: list[str] | None = None,
     ) -> None:
         """Initialize UnstopScraper.
 
         Args:
             options: Browser launch options.
             provider: LLM provider to use for selector generation.
+            event_types: List of Unstop event types to scrape (e.g. ['hackathons', 'competitions']).
+            categories: List of Unstop categories to filter by (e.g. ['artificial-intelligence-machine-learning']).
         """
         super().__init__(options)
         self._provider = provider
         self._model = Providers.default_model(provider)
+        self._event_types = event_types or DEFAULT_EVENT_TYPES
+        self._categories = categories or DEFAULT_AI_CATEGORIES
         self._llm_manager = LLMManager(LiteLLMClient())
         self._profile_manager = UnstopProfileManager()
         self._opportunity_parser = OpportunityParser()
 
+    def _build_target_url(self, event_type: str) -> str:
+        """Construct the category-filtered listing URL for a given event type.
+
+        Example:
+            https://unstop.com/hackathons?oppstatus=open&category=artificial-intelligence-machine-learning:data-analytics
+        """
+        cat_query = ":".join(self._categories)
+        return f"https://unstop.com/{event_type}?oppstatus=open&category={cat_query}"
+
     async def scrape(self) -> list[Opportunity]:
-        """Execute the full Unstop scraping pipeline.
+        """Execute the full Unstop scraping pipeline across all target event types.
 
         Returns:
-            A list of parsed Opportunity models.
+            A list of unique parsed Opportunity models.
         """
-        logger.info("Starting Unstop scrape (url=%s)", _LISTING_URL)
-
-        await self.goto(_LISTING_URL, wait_until="domcontentloaded")
-        await self._dismiss_cookie_banner()
-        await self._dismiss_login_modal()
-        await self._wait_for_cards()
-
-        profile = await self._get_or_generate_profile()
-        selector_parser = SelectorParser(profile)
-
+        seen_urls: set[str] = set()
         opportunities: list[Opportunity] = []
-        pages_scraped = 0
 
-        while pages_scraped < _MAX_PAGES:
-            logger.info("Scraping page %d/%d", pages_scraped + 1, _MAX_PAGES)
+        profile = None
 
-            cards = await self._locate_cards()
-            card_count = await cards.count()
+        for event_type in self._event_types:
+            target_url = self._build_target_url(event_type)
+            logger.info("Scraping Unstop category: %s (url=%s)", event_type, target_url)
 
-            logger.info("Found %d opportunity cards on this page.", card_count)
+            await self.goto(target_url, wait_until="domcontentloaded")
+            await self._dismiss_cookie_banner()
+            await self._dismiss_login_modal()
+            await self._wait_for_cards()
 
-            for i in range(card_count):
-                card = cards.nth(i)
-                try:
-                    raw_data = await selector_parser.parse(card)  # type: ignore[arg-type]
-                    raw_data["source"] = OpportunitySource.UNSTOP
-                    raw_data["source_url"] = raw_data.get("source_url") or _LISTING_URL
-                    raw_data["id"] = raw_data.get("source_url") or f"unstop-{i}"
-                    raw_data["type"] = "hackathon"
-                    raw_data["status"] = "open"
-                    raw_data.setdefault("organizer", {"name": "Unstop"})
-                    raw_data.setdefault("location", {"type": "online"})
-                    raw_data.setdefault("timeline", {})
+            if profile is None:
+                profile = await self._get_or_generate_profile()
 
-                    opportunity = self._opportunity_parser.parse(raw_data)
-                    opportunities.append(opportunity)
-                    logger.debug("Parsed opportunity: %s", opportunity.title)
+            selector_parser = SelectorParser(profile)
+            pages_scraped = 0
 
-                except Exception:
-                    logger.warning(
-                        "Failed to parse card %d on page %d — skipping.",
-                        i,
-                        pages_scraped + 1,
-                        exc_info=True,
-                    )
+            while pages_scraped < _MAX_PAGES:
+                logger.info("Scraping %s — page %d/%d", event_type, pages_scraped + 1, _MAX_PAGES)
 
-            pages_scraped += 1
+                cards = await self._locate_cards()
+                card_count = await cards.count()
 
-            if not await self._click_load_more():
-                logger.info("No 'Load More' button found — stopping pagination.")
-                break
+                logger.info("Found %d opportunity cards on this page.", card_count)
 
-            await asyncio.sleep(_PAGINATION_DELAY_S)
+                for i in range(card_count):
+                    card = cards.nth(i)
+                    try:
+                        raw_data = await selector_parser.parse(card)  # type: ignore[arg-type]
+                        source_url = raw_data.get("source_url") or target_url
+
+                        if source_url in seen_urls:
+                            logger.debug("Duplicate opportunity skipped: %s", source_url)
+                            continue
+
+                        raw_data["source"] = OpportunitySource.UNSTOP
+                        raw_data["source_url"] = source_url
+                        raw_data["id"] = source_url
+                        raw_data["type"] = event_type.rstrip("s")  # e.g. hackathons -> hackathon
+                        raw_data["status"] = "open"
+                        raw_data.setdefault("organizer", {"name": "Unstop"})
+                        raw_data.setdefault("location", {"type": "online"})
+                        raw_data.setdefault("timeline", {})
+
+                        opportunity = self._opportunity_parser.parse(raw_data)
+                        opportunities.append(opportunity)
+                        seen_urls.add(source_url)
+                        logger.debug("Parsed opportunity: %s", opportunity.title)
+
+                    except Exception:
+                        logger.warning(
+                            "Failed to parse card %d on %s page %d — skipping.",
+                            i,
+                            event_type,
+                            pages_scraped + 1,
+                            exc_info=True,
+                        )
+
+                current_page = pages_scraped + 1
+                pages_scraped += 1
+
+                if pages_scraped >= _MAX_PAGES:
+                    logger.info("Reached max pages limit (%d) for %s — moving to next type.", _MAX_PAGES, event_type)
+                    break
+
+                if not await self._click_next_page(current_page):
+                    logger.info("No next page button for %s — moving to next type.", event_type)
+                    break
+
+                await asyncio.sleep(_PAGINATION_DELAY_S)
+                await self._wait_for_cards()
 
         logger.info(
-            "Unstop scrape complete: %d opportunities collected.", len(opportunities)
+            "Unstop scrape complete: %d unique AI opportunities collected across %d categories.",
+            len(opportunities),
+            len(self._event_types),
         )
         return opportunities
 
@@ -183,32 +227,23 @@ class UnstopScraper(BaseScraper):
 
     async def _dismiss_login_modal(self) -> None:
         """Attempt to dismiss login popup modal if visible."""
-        # Try pressing Escape key
+        # 1. Try pressing Escape key twice
         try:
             await self.page.keyboard.press("Escape")
-            await asyncio.sleep(0.5)
+            await self.page.keyboard.press("Escape")
         except Exception:
             pass
 
-        # Try clicking common close button selectors
-        close_selectors = [
-            "button.close",
-            "span.close",
-            "div.close",
-            "i.close",
-            "[class*='close']",
-            "mat-icon:has-text('close')",
-            ".cdk-overlay-backdrop",
-        ]
-        for selector in close_selectors:
-            try:
-                btn = self.page.locator(selector).first
-                if await btn.is_visible(timeout=1000):
-                    await btn.click()
-                    logger.debug("Dismissed login modal via selector: %s", selector)
-                    return
-            except Exception:
-                pass
+        # 2. Directly purge any overlay modal containers from DOM via JS
+        try:
+            await self.page.evaluate("""() => {
+                const overlays = document.querySelectorAll(
+                    '.cdk-overlay-container, .un_modal_right_bg, [aria-label*="un-modal"], .cdk-overlay-backdrop, mat-dialog-container'
+                );
+                overlays.forEach(el => el.remove());
+            }""")
+        except Exception:
+            pass
 
     async def _wait_for_cards(self) -> None:
         """Wait for at least one opportunity card to appear on the page."""
@@ -275,18 +310,38 @@ class UnstopScraper(BaseScraper):
         logger.info("Generated and cached new Unstop SelectorProfile.")
         return profile
 
-    async def _click_load_more(self) -> bool:
-        """Click the 'Load More' button if it is visible.
+    async def _click_next_page(self, current_page_num: int) -> bool:
+        """Click the next page number or right arrow in app-pagination.
+
+        Args:
+            current_page_num: The 1-based index of the page currently being scraped.
 
         Returns:
-            True if the button was found and clicked, False otherwise.
+            True if navigation to the next page succeeded, False otherwise.
         """
+        # Ensure any newly popped overlays are purged before clicking
+        await self._dismiss_login_modal()
+
+        # Try clicking the next page number directly (e.g. page 2, 3)
+        next_num_selector = f"app-pagination li.num span:has-text('{current_page_num + 1}')"
         try:
-            btn = self.page.locator(_LOAD_MORE_SELECTOR).first
-            if await btn.is_visible(timeout=3000):
+            btn = self.page.locator(next_num_selector).first
+            if await btn.is_visible(timeout=2000):
                 await btn.click()
-                logger.debug("Clicked 'Load More' button.")
+                logger.info("Navigated to page %d via page number click.", current_page_num + 1)
                 return True
         except Exception:
             pass
+
+        # Fallback to right-arrow button
+        for selector in _NEXT_PAGE_SELECTORS:
+            try:
+                btn = self.page.locator(selector).first
+                if await btn.is_visible(timeout=2000):
+                    await btn.click()
+                    logger.info("Navigated to next page via right arrow selector: %s", selector)
+                    return True
+            except Exception:
+                pass
+
         return False
