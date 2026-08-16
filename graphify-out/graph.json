@@ -10,7 +10,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "examples_browser_basic_browser",
-      "community": 13,
+      "community": 6,
       "norm_label": "basic_browser.py"
     },
     {
@@ -20,7 +20,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "examples_browser_basic_browser_main",
-      "community": 13,
+      "community": 6,
       "norm_label": "main()"
     },
     {
@@ -84,6 +84,36 @@
       "norm_label": "run connectivity test for all configured providers."
     },
     {
+      "label": "debug_unstop_pagination.py",
+      "file_type": "code",
+      "source_file": "examples/scraper/debug_unstop_pagination.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "examples_scraper_debug_unstop_pagination",
+      "community": 86,
+      "norm_label": "debug_unstop_pagination.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "examples/scraper/debug_unstop_pagination.py",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "examples_scraper_debug_unstop_pagination_main",
+      "community": 86,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Inspect app-pagination element.",
+      "file_type": "rationale",
+      "source_file": "examples/scraper/debug_unstop_pagination.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "examples_scraper_debug_unstop_pagination_rationale_1",
+      "community": 86,
+      "norm_label": "inspect app-pagination element."
+    },
+    {
       "label": "debug_unstop_selectors.py",
       "file_type": "code",
       "source_file": "examples/scraper/debug_unstop_selectors.py",
@@ -120,17 +150,17 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "examples_scraper_run_unstop",
-      "community": 6,
+      "community": 36,
       "norm_label": "run_unstop.py"
     },
     {
       "label": "main()",
       "file_type": "code",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "examples_scraper_run_unstop_main",
-      "community": 6,
+      "community": 36,
       "norm_label": "main()"
     },
     {
@@ -140,7 +170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "examples_scraper_run_unstop_rationale_1",
-      "community": 6,
+      "community": 36,
       "norm_label": "unstop scraper end-to-end runner.  run with:     poetry run python -m examples.s"
     },
     {
@@ -313,7 +343,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_browsermanager",
-      "community": 13,
+      "community": 6,
       "norm_label": "browsermanager"
     },
     {
@@ -323,7 +353,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_browsermanager_init",
-      "community": 13,
+      "community": 6,
       "norm_label": ".__init__()"
     },
     {
@@ -363,14 +393,14 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_browsermanager_close",
-      "community": 13,
+      "community": 12,
       "norm_label": ".close()"
     },
     {
       "label": ".browser()",
       "file_type": "code",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L106",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_browsermanager_browser",
       "community": 12,
@@ -380,7 +410,7 @@
       "label": ".context()",
       "file_type": "code",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L120",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_browsermanager_context",
       "community": 8,
@@ -400,10 +430,10 @@
       "label": ".is_running()",
       "file_type": "code",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L133",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_browsermanager_is_running",
-      "community": 13,
+      "community": 12,
       "norm_label": ".is_running()"
     },
     {
@@ -413,7 +443,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_rationale_15",
-      "community": 13,
+      "community": 6,
       "norm_label": "manages the patchright browser lifecycle."
     },
     {
@@ -423,7 +453,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_rationale_23",
-      "community": 13,
+      "community": 6,
       "norm_label": "initialize the browsermanager.          args:             options: browser la"
     },
     {
@@ -453,16 +483,16 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "scraper_core_browser_manager_rationale_80",
-      "community": 13,
+      "community": 12,
       "norm_label": "close all browser resources."
     },
     {
       "label": "Return the active browser instance.          Raises:             BrowserError",
       "file_type": "rationale",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L107",
+      "source_location": "L116",
       "_origin": "ast",
-      "id": "scraper_core_browser_manager_rationale_107",
+      "id": "scraper_core_browser_manager_rationale_116",
       "community": 12,
       "norm_label": "return the active browser instance.          raises:             browsererror"
     },
@@ -470,9 +500,9 @@
       "label": "Return the active browser context.          Raises:             BrowserError:",
       "file_type": "rationale",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L121",
+      "source_location": "L130",
       "_origin": "ast",
-      "id": "scraper_core_browser_manager_rationale_121",
+      "id": "scraper_core_browser_manager_rationale_130",
       "community": 8,
       "norm_label": "return the active browser context.          raises:             browsererror:"
     },
@@ -480,10 +510,10 @@
       "label": "Returns True if the browser is currently running.",
       "file_type": "rationale",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L134",
+      "source_location": "L143",
       "_origin": "ast",
-      "id": "scraper_core_browser_manager_rationale_134",
-      "community": 13,
+      "id": "scraper_core_browser_manager_rationale_143",
+      "community": 12,
       "norm_label": "returns true if the browser is currently running."
     },
     {
@@ -633,7 +663,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "exception",
-      "community": 8,
+      "community": 0,
       "norm_label": "exception"
     },
     {
@@ -1753,7 +1783,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "scraper_parsers_selector_engine_selectorengine_dispatch_map",
-      "community": 34,
+      "community": 3,
       "norm_label": "._dispatch_map()"
     },
     {
@@ -1763,7 +1793,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "extractionhandler",
-      "community": 34,
+      "community": 3,
       "norm_label": "extractionhandler"
     },
     {
@@ -1983,7 +2013,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scraper_parsers_selector_parser",
-      "community": 14,
+      "community": 85,
       "norm_label": "selector_parser.py"
     },
     {
@@ -2223,7 +2253,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "scraper_scrapers_base_base_scraper_basescraper_init",
-      "community": 5,
+      "community": 6,
       "norm_label": ".__init__()"
     },
     {
@@ -2253,7 +2283,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "scraper_scrapers_base_base_scraper_basescraper_browser_manager",
-      "community": 13,
+      "community": 5,
       "norm_label": ".browser_manager()"
     },
     {
@@ -2343,7 +2373,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "scraper_scrapers_base_base_scraper_rationale_20",
-      "community": 5,
+      "community": 6,
       "norm_label": "initialize the scraper.          args:             options: configuration opt"
     },
     {
@@ -2363,7 +2393,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "scraper_scrapers_base_base_scraper_rationale_49",
-      "community": 13,
+      "community": 5,
       "norm_label": "access the browser lifecycle manager.          returns:             the brows"
     },
     {
@@ -2463,7 +2493,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_init",
-      "community": 0,
+      "community": 14,
       "norm_label": "__init__.py"
     },
     {
@@ -2483,7 +2513,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_profile_manager",
-      "community": 0,
+      "community": 14,
       "norm_label": "profile_manager.py"
     },
     {
@@ -2493,7 +2523,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_profile_manager_unstopprofilemanager",
-      "community": 0,
+      "community": 14,
       "norm_label": "unstopprofilemanager"
     },
     {
@@ -2523,7 +2553,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_profile_manager_unstopprofilemanager_invalidate",
-      "community": 0,
+      "community": 14,
       "norm_label": ".invalidate()"
     },
     {
@@ -2533,7 +2563,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_profile_manager_rationale_19",
-      "community": 0,
+      "community": 14,
       "norm_label": "loads and saves the unstop selectorprofile to a local json file.      keeping th"
     },
     {
@@ -2563,7 +2593,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_profile_manager_rationale_70",
-      "community": 0,
+      "community": 14,
       "norm_label": "delete the cached profile, forcing regeneration on the next run."
     },
     {
@@ -2573,34 +2603,44 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper",
-      "community": 0,
+      "community": 14,
       "norm_label": "scraper.py"
     },
     {
       "label": "UnstopScraper",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L61",
+      "source_location": "L77",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper",
-      "community": 0,
+      "community": 36,
       "norm_label": "unstopscraper"
     },
     {
       "label": ".__init__()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L78",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "community": 0,
       "norm_label": ".__init__()"
     },
     {
+      "label": "._build_target_url()",
+      "file_type": "code",
+      "source_file": "scraper/scrapers/unstop/scraper.py",
+      "source_location": "L108",
+      "_origin": "ast",
+      "id": "scraper_scrapers_unstop_scraper_unstopscraper_build_target_url",
+      "community": 36,
+      "norm_label": "._build_target_url()"
+    },
+    {
       "label": ".scrape()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L96",
+      "source_location": "L117",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "community": 36,
@@ -2610,7 +2650,7 @@
       "label": "._dismiss_cookie_banner()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L165",
+      "source_location": "L209",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_cookie_banner",
       "community": 36,
@@ -2620,7 +2660,7 @@
       "label": "._dismiss_login_modal()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L184",
+      "source_location": "L228",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_login_modal",
       "community": 36,
@@ -2630,7 +2670,7 @@
       "label": "._wait_for_cards()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L213",
+      "source_location": "L248",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_wait_for_cards",
       "community": 36,
@@ -2640,7 +2680,7 @@
       "label": "._locate_cards()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L231",
+      "source_location": "L266",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_locate_cards",
       "community": 36,
@@ -2660,59 +2700,69 @@
       "label": "._get_or_generate_profile()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L242",
+      "source_location": "L277",
       "_origin": "ast",
       "id": "scraper_scrapers_unstop_scraper_unstopscraper_get_or_generate_profile",
       "community": 36,
       "norm_label": "._get_or_generate_profile()"
     },
     {
-      "label": "._click_load_more()",
+      "label": "._click_next_page()",
       "file_type": "code",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L278",
+      "source_location": "L313",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_unstopscraper_click_load_more",
+      "id": "scraper_scrapers_unstop_scraper_unstopscraper_click_next_page",
       "community": 36,
-      "norm_label": "._click_load_more()"
+      "norm_label": "._click_next_page()"
     },
     {
-      "label": "Concrete scraper for unstop.com opportunity listings.      Responsibilities:",
+      "label": "Concrete scraper for unstop.com AI/ML opportunity listings.      Supports catego",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L62",
+      "source_location": "L78",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_62",
-      "community": 0,
-      "norm_label": "concrete scraper for unstop.com opportunity listings.      responsibilities:"
+      "id": "scraper_scrapers_unstop_scraper_rationale_78",
+      "community": 36,
+      "norm_label": "concrete scraper for unstop.com ai/ml opportunity listings.      supports catego"
     },
     {
       "label": "Initialize UnstopScraper.          Args:             options: Browser launch opt",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L83",
+      "source_location": "L91",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_83",
+      "id": "scraper_scrapers_unstop_scraper_rationale_91",
       "community": 0,
       "norm_label": "initialize unstopscraper.          args:             options: browser launch opt"
     },
     {
-      "label": "Execute the full Unstop scraping pipeline.          Returns:             A list",
+      "label": "Construct the category-filtered listing URL for a given event type.          Exa",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L97",
+      "source_location": "L109",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_97",
+      "id": "scraper_scrapers_unstop_scraper_rationale_109",
       "community": 36,
-      "norm_label": "execute the full unstop scraping pipeline.          returns:             a list"
+      "norm_label": "construct the category-filtered listing url for a given event type.          exa"
+    },
+    {
+      "label": "Execute the full Unstop scraping pipeline across all target event types.",
+      "file_type": "rationale",
+      "source_file": "scraper/scrapers/unstop/scraper.py",
+      "source_location": "L118",
+      "_origin": "ast",
+      "id": "scraper_scrapers_unstop_scraper_rationale_118",
+      "community": 36,
+      "norm_label": "execute the full unstop scraping pipeline across all target event types."
     },
     {
       "label": "Attempt to dismiss a cookie consent banner if visible.",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L166",
+      "source_location": "L210",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_166",
+      "id": "scraper_scrapers_unstop_scraper_rationale_210",
       "community": 36,
       "norm_label": "attempt to dismiss a cookie consent banner if visible."
     },
@@ -2720,9 +2770,9 @@
       "label": "Attempt to dismiss login popup modal if visible.",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L185",
+      "source_location": "L229",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_185",
+      "id": "scraper_scrapers_unstop_scraper_rationale_229",
       "community": 36,
       "norm_label": "attempt to dismiss login popup modal if visible."
     },
@@ -2730,9 +2780,9 @@
       "label": "Wait for at least one opportunity card to appear on the page.",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L214",
+      "source_location": "L249",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_214",
+      "id": "scraper_scrapers_unstop_scraper_rationale_249",
       "community": 36,
       "norm_label": "wait for at least one opportunity card to appear on the page."
     },
@@ -2740,9 +2790,9 @@
       "label": "Return a Locator pointing to all opportunity cards on the current page.",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L232",
+      "source_location": "L267",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_232",
+      "id": "scraper_scrapers_unstop_scraper_rationale_267",
       "community": 36,
       "norm_label": "return a locator pointing to all opportunity cards on the current page."
     },
@@ -2750,21 +2800,21 @@
       "label": "Load the saved SelectorProfile or generate a new one via the LLM.          Retur",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L243",
+      "source_location": "L278",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_243",
+      "id": "scraper_scrapers_unstop_scraper_rationale_278",
       "community": 36,
       "norm_label": "load the saved selectorprofile or generate a new one via the llm.          retur"
     },
     {
-      "label": "Click the 'Load More' button if it is visible.          Returns:             Tru",
+      "label": "Click the next page number or right arrow in app-pagination.          Args:",
       "file_type": "rationale",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L279",
+      "source_location": "L314",
       "_origin": "ast",
-      "id": "scraper_scrapers_unstop_scraper_rationale_279",
+      "id": "scraper_scrapers_unstop_scraper_rationale_314",
       "community": 36,
-      "norm_label": "click the 'load more' button if it is visible.          returns:             tru"
+      "norm_label": "click the next page number or right arrow in app-pagination.          args:"
     },
     {
       "label": "__init__.py",
@@ -3253,7 +3303,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_llm_manager",
-      "community": 0,
+      "community": 77,
       "norm_label": "manager.py"
     },
     {
@@ -3263,7 +3313,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "shared_llm_manager_llmmanager",
-      "community": 0,
+      "community": 85,
       "norm_label": "llmmanager"
     },
     {
@@ -3283,7 +3333,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "shared_llm_manager_llmmanager_generate_selector_profile",
-      "community": 14,
+      "community": 85,
       "norm_label": ".generate_selector_profile()"
     },
     {
@@ -3293,7 +3343,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "shared_llm_manager_llmmanager_execute_request",
-      "community": 0,
+      "community": 77,
       "norm_label": "._execute_request()"
     },
     {
@@ -3323,7 +3373,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "shared_llm_manager_rationale_23",
-      "community": 0,
+      "community": 85,
       "norm_label": "coordinates all llm operations."
     },
     {
@@ -3343,7 +3393,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "shared_llm_manager_rationale_39",
-      "community": 14,
+      "community": 85,
       "norm_label": "generates a selector profile for a webpage."
     },
     {
@@ -3353,7 +3403,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "shared_llm_manager_rationale_102",
-      "community": 0,
+      "community": 77,
       "norm_label": "creates and sends an llm request."
     },
     {
@@ -3373,7 +3423,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_llm_models",
-      "community": 0,
+      "community": 77,
       "norm_label": "models.py"
     },
     {
@@ -3383,7 +3433,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "shared_llm_models_llmtask",
-      "community": 0,
+      "community": 77,
       "norm_label": "llmtask"
     },
     {
@@ -3403,7 +3453,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "shared_llm_models_tokenusage",
-      "community": 0,
+      "community": 77,
       "norm_label": "tokenusage"
     },
     {
@@ -3423,7 +3473,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "shared_llm_models_llmresponse",
-      "community": 0,
+      "community": 77,
       "norm_label": "llmresponse"
     },
     {
@@ -3433,7 +3483,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "shared_llm_models_rationale_7",
-      "community": 0,
+      "community": 77,
       "norm_label": "supported tasks for llm operations."
     },
     {
@@ -3453,7 +3503,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "shared_llm_models_rationale_23",
-      "community": 0,
+      "community": 77,
       "norm_label": "represents the token consumption for an llm request and response."
     },
     {
@@ -3473,7 +3523,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "shared_llm_models_rationale_85",
-      "community": 0,
+      "community": 77,
       "norm_label": "represents a response received from an llm provider."
     },
     {
@@ -3653,7 +3703,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_llm_prompt_builder",
-      "community": 0,
+      "community": 77,
       "norm_label": "prompt_builder.py"
     },
     {
@@ -3993,7 +4043,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "shared_llm_selector_profile_extractionfield",
-      "community": 3,
+      "community": 34,
       "norm_label": "extractionfield"
     },
     {
@@ -4033,7 +4083,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "shared_llm_selector_profile_selectorprofile",
-      "community": 14,
+      "community": 85,
       "norm_label": "selectorprofile"
     },
     {
@@ -4073,7 +4123,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "shared_llm_selector_profile_rationale_66",
-      "community": 3,
+      "community": 34,
       "norm_label": "represents a single field to extract from a webpage."
     },
     {
@@ -4113,7 +4163,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "shared_llm_selector_profile_rationale_138",
-      "community": 14,
+      "community": 85,
       "norm_label": "represents a complete selector profile for a webpage."
     },
     {
@@ -4123,7 +4173,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_llm_templates",
-      "community": 14,
+      "community": 77,
       "norm_label": "templates.py"
     },
     {
@@ -4133,7 +4183,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "shared_llm_templates_prompttemplates",
-      "community": 14,
+      "community": 77,
       "norm_label": "prompttemplates"
     },
     {
@@ -4143,7 +4193,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "shared_llm_templates_prompttemplates_new",
-      "community": 14,
+      "community": 77,
       "norm_label": ".__new__()"
     },
     {
@@ -4153,7 +4203,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "shared_llm_templates_rationale_7",
-      "community": 14,
+      "community": 77,
       "norm_label": "stores all prompt templates used by the llm."
     },
     {
@@ -4163,7 +4213,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "shared_llm_validator",
-      "community": 14,
+      "community": 85,
       "norm_label": "validator.py"
     },
     {
@@ -4173,7 +4223,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "shared_llm_validator_selectorprofilevalidator",
-      "community": 14,
+      "community": 85,
       "norm_label": "selectorprofilevalidator"
     },
     {
@@ -4183,7 +4233,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "shared_llm_validator_selectorprofilevalidator_init",
-      "community": 14,
+      "community": 85,
       "norm_label": ".__init__()"
     },
     {
@@ -4193,7 +4243,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "shared_llm_validator_selectorprofilevalidator_validate",
-      "community": 14,
+      "community": 85,
       "norm_label": ".validate()"
     },
     {
@@ -4203,7 +4253,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "shared_llm_validator_rationale_10",
-      "community": 14,
+      "community": 85,
       "norm_label": "validator for selectorprofile models."
     },
     {
@@ -4213,7 +4263,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "shared_llm_validator_rationale_17",
-      "community": 14,
+      "community": 85,
       "norm_label": "validates a selectorprofile.          args:             profile: the selector"
     },
     {
@@ -4583,7 +4633,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "shared_models_metadata_metadata",
-      "community": 15,
+      "community": 1,
       "norm_label": "metadata"
     },
     {
@@ -4613,7 +4663,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "shared_models_metadata_rationale_9",
-      "community": 15,
+      "community": 1,
       "norm_label": "additional metadata collected during scraping.      this model is intentionall"
     },
     {
@@ -5377,10 +5427,20 @@
       "norm_label": "2026-08-16 \u2014 unstop concrete scraper implementation (phase 4d baseline)"
     },
     {
+      "label": "2026-08-16 \u2014 Unstop Multi-Category AI Scraper & Pagination Fixes (Phase 4D Baseline)",
+      "file_type": "document",
+      "source_file": ".state/DEVELOPMENT_STATUS.md",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "state_development_status_2026_08_16_unstop_multi_category_ai_scraper_pagination_fixes_phase_4d_baseline",
+      "community": 68,
+      "norm_label": "2026-08-16 \u2014 unstop multi-category ai scraper & pagination fixes (phase 4d baseline)"
+    },
+    {
       "label": "Build Status",
       "file_type": "document",
       "source_file": ".state/DEVELOPMENT_STATUS.md",
-      "source_location": "L16",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "state_development_status_build_status",
       "community": 68,
@@ -5390,7 +5450,7 @@
       "label": "Next Actions",
       "file_type": "document",
       "source_file": ".state/DEVELOPMENT_STATUS.md",
-      "source_location": "L22",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "state_development_status_next_actions",
       "community": 68,
@@ -7581,6 +7641,26 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "examples/scraper/debug_unstop_pagination.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "examples_scraper_debug_unstop_pagination",
+      "target": "examples_scraper_debug_unstop_pagination_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "examples/scraper/debug_unstop_pagination.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "examples_scraper_debug_unstop_pagination_rationale_1",
+      "target": "examples_scraper_debug_unstop_pagination",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "examples/scraper/debug_unstop_selectors.py",
       "source_location": "L8",
       "weight": 1.0,
@@ -7602,7 +7682,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop",
       "target": "examples_scraper_run_unstop_main",
@@ -7613,7 +7693,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop",
       "target": "scraper_core_browser_models",
@@ -7624,7 +7704,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop",
       "target": "scraper_core_browser_models_browserlaunchoptions",
@@ -7635,7 +7715,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper",
@@ -7646,7 +7726,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop",
       "target": "shared_llm_models",
@@ -7657,7 +7737,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop",
       "target": "shared_llm_models_llmprovider",
@@ -7678,7 +7758,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop_main",
       "target": "scraper_core_browser_models_browserlaunchoptions",
@@ -7689,7 +7769,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "examples/scraper/run_unstop.py",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0,
       "source": "examples_scraper_run_unstop_main",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper",
@@ -8094,7 +8174,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L106",
+      "source_location": "L115",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager",
       "target": "scraper_core_browser_manager_browsermanager_browser",
@@ -8114,7 +8194,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L120",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager",
       "target": "scraper_core_browser_manager_browsermanager_context",
@@ -8134,7 +8214,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L133",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager",
       "target": "scraper_core_browser_manager_browsermanager_is_running",
@@ -8314,7 +8394,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L115",
+      "source_location": "L124",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager_browser",
       "target": "scraper_core_exceptions_browser_browsererror"
@@ -8324,7 +8404,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L106",
+      "source_location": "L115",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager_browser",
       "target": "shared_constants_browser_browser",
@@ -8334,9 +8414,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L107",
+      "source_location": "L116",
       "weight": 1.0,
-      "source": "scraper_core_browser_manager_rationale_107",
+      "source": "scraper_core_browser_manager_rationale_116",
       "target": "scraper_core_browser_manager_browsermanager_browser",
       "confidence_score": 1.0
     },
@@ -8345,7 +8425,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L120",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager_context",
       "target": "scraper_core_browser_manager_py_browsercontext",
@@ -8357,7 +8437,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L129",
+      "source_location": "L138",
       "weight": 1.0,
       "source": "scraper_core_browser_manager_browsermanager_context",
       "target": "scraper_core_exceptions_browser_browsererror"
@@ -8366,9 +8446,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L121",
+      "source_location": "L130",
       "weight": 1.0,
-      "source": "scraper_core_browser_manager_rationale_121",
+      "source": "scraper_core_browser_manager_rationale_130",
       "target": "scraper_core_browser_manager_browsermanager_context",
       "confidence_score": 1.0
     },
@@ -8376,9 +8456,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/core/browser/manager.py",
-      "source_location": "L134",
+      "source_location": "L143",
       "weight": 1.0,
-      "source": "scraper_core_browser_manager_rationale_134",
+      "source": "scraper_core_browser_manager_rationale_143",
       "target": "scraper_core_browser_manager_browsermanager_is_running",
       "confidence_score": 1.0
     },
@@ -8683,7 +8763,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L78",
+      "source_location": "L84",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "scraper_core_browser_models_browserlaunchoptions",
@@ -9959,7 +10039,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L94",
+      "source_location": "L106",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "scraper_parsers_opportunity_parser_opportunityparser"
@@ -11761,7 +11841,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L110",
+      "source_location": "L140",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "scraper_parsers_selector_parser_selectorparser"
@@ -12176,7 +12256,7 @@
       "relation": "inherits",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L61",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_base_base_scraper_basescraper",
@@ -12523,7 +12603,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L93",
+      "source_location": "L105",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "scraper_scrapers_unstop_profile_manager_unstopprofilemanager"
@@ -12584,7 +12664,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L61",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper",
@@ -12748,9 +12828,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L62",
+      "source_location": "L78",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_62",
+      "source": "scraper_scrapers_unstop_scraper_rationale_78",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper",
       "confidence_score": 1.0
     },
@@ -12758,17 +12838,27 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L278",
+      "source_location": "L108",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
-      "target": "scraper_scrapers_unstop_scraper_unstopscraper_click_load_more",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_build_target_url",
       "confidence_score": 1.0
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L165",
+      "source_location": "L313",
+      "weight": 1.0,
+      "source": "scraper_scrapers_unstop_scraper_unstopscraper",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_click_next_page",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scraper/scrapers/unstop/scraper.py",
+      "source_location": "L209",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_cookie_banner",
@@ -12778,7 +12868,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L184",
+      "source_location": "L228",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_login_modal",
@@ -12788,7 +12878,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L242",
+      "source_location": "L277",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_get_or_generate_profile",
@@ -12798,7 +12888,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L78",
+      "source_location": "L84",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_init",
@@ -12808,7 +12898,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L231",
+      "source_location": "L266",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_locate_cards",
@@ -12818,7 +12908,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L96",
+      "source_location": "L117",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
@@ -12828,7 +12918,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L213",
+      "source_location": "L248",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_wait_for_cards",
@@ -12888,9 +12978,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L83",
+      "source_location": "L91",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_83",
+      "source": "scraper_scrapers_unstop_scraper_rationale_91",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "confidence_score": 1.0
     },
@@ -12900,7 +12990,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L92",
+      "source_location": "L104",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "shared_llm_client_litellmclient"
@@ -12911,7 +13001,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L92",
+      "source_location": "L104",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "shared_llm_manager_llmmanager"
@@ -12921,7 +13011,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L78",
+      "source_location": "L84",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "shared_llm_models_llmprovider",
@@ -12933,7 +13023,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L91",
+      "source_location": "L101",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_init",
       "target": "shared_llm_providers_providers_default_model"
@@ -12942,9 +13032,30 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L97",
+      "source_location": "L109",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_97",
+      "source": "scraper_scrapers_unstop_scraper_rationale_109",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_build_target_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scraper/scrapers/unstop/scraper.py",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_build_target_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scraper/scrapers/unstop/scraper.py",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "scraper_scrapers_unstop_scraper_rationale_118",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "confidence_score": 1.0
     },
@@ -12953,10 +13064,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L150",
+      "source_location": "L191",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
-      "target": "scraper_scrapers_unstop_scraper_unstopscraper_click_load_more",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_click_next_page",
       "confidence_score": 1.0
     },
     {
@@ -12964,7 +13075,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L105",
+      "source_location": "L133",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_cookie_banner",
@@ -12975,7 +13086,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L106",
+      "source_location": "L134",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_login_modal",
@@ -12986,7 +13097,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L109",
+      "source_location": "L138",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_get_or_generate_profile",
@@ -12997,7 +13108,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L118",
+      "source_location": "L146",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_locate_cards",
@@ -13008,7 +13119,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L107",
+      "source_location": "L135",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_wait_for_cards",
@@ -13019,7 +13130,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L96",
+      "source_location": "L117",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_scrape",
       "target": "shared_models_opportunity_opportunity",
@@ -13029,9 +13140,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L166",
+      "source_location": "L210",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_166",
+      "source": "scraper_scrapers_unstop_scraper_rationale_210",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_cookie_banner",
       "confidence_score": 1.0
     },
@@ -13039,9 +13150,20 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L185",
+      "source_location": "L229",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_185",
+      "source": "scraper_scrapers_unstop_scraper_rationale_229",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_login_modal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scraper/scrapers/unstop/scraper.py",
+      "source_location": "L323",
+      "weight": 1.0,
+      "source": "scraper_scrapers_unstop_scraper_unstopscraper_click_next_page",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_dismiss_login_modal",
       "confidence_score": 1.0
     },
@@ -13049,9 +13171,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L214",
+      "source_location": "L249",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_214",
+      "source": "scraper_scrapers_unstop_scraper_rationale_249",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_wait_for_cards",
       "confidence_score": 1.0
     },
@@ -13059,9 +13181,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L232",
+      "source_location": "L267",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_232",
+      "source": "scraper_scrapers_unstop_scraper_rationale_267",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_locate_cards",
       "confidence_score": 1.0
     },
@@ -13070,7 +13192,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L257",
+      "source_location": "L292",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_get_or_generate_profile",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_locate_cards",
@@ -13081,7 +13203,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L231",
+      "source_location": "L266",
       "weight": 1.0,
       "source": "scraper_scrapers_unstop_scraper_unstopscraper_locate_cards",
       "target": "scraper_scrapers_unstop_scraper_py_locator",
@@ -13091,9 +13213,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L243",
+      "source_location": "L278",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_243",
+      "source": "scraper_scrapers_unstop_scraper_rationale_278",
       "target": "scraper_scrapers_unstop_scraper_unstopscraper_get_or_generate_profile",
       "confidence_score": 1.0
     },
@@ -13101,10 +13223,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper/scrapers/unstop/scraper.py",
-      "source_location": "L279",
+      "source_location": "L314",
       "weight": 1.0,
-      "source": "scraper_scrapers_unstop_scraper_rationale_279",
-      "target": "scraper_scrapers_unstop_scraper_unstopscraper_click_load_more",
+      "source": "scraper_scrapers_unstop_scraper_rationale_314",
+      "target": "scraper_scrapers_unstop_scraper_unstopscraper_click_next_page",
       "confidence_score": 1.0
     },
     {
@@ -17556,7 +17678,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".state/DEVELOPMENT_STATUS.md",
-      "source_location": "L16",
+      "source_location": "L22",
       "weight": 1.0,
       "source": "state_development_status_development_status",
       "target": "state_development_status_build_status",
@@ -17576,7 +17698,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".state/DEVELOPMENT_STATUS.md",
-      "source_location": "L22",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "state_development_status_development_status",
       "target": "state_development_status_next_actions",
@@ -17600,6 +17722,16 @@
       "weight": 1.0,
       "source": "state_development_status_recent_changes",
       "target": "state_development_status_2026_08_16_unstop_concrete_scraper_implementation_phase_4d_baseline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".state/DEVELOPMENT_STATUS.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "state_development_status_recent_changes",
+      "target": "state_development_status_2026_08_16_unstop_multi_category_ai_scraper_pagination_fixes_phase_4d_baseline",
       "confidence_score": 1.0
     },
     {
@@ -19274,5 +19406,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "aafd4920650562cf93f86a9c7c9f8558128a0f4a"
+  "built_at_commit": "472d480c482034dd258ec6c8a080b5a4d3e7ebe4"
 }

@@ -77,5 +77,14 @@
   "75": "Known Issues",
   "76": "Task Queue",
   "77": ".parse",
-  "78": "agent-progress.md"
+  "78": "agent-progress.md",
+  "79": ".parse",
+  "80": "debug_unstop_selectors.py",
+  "81": "LiteLLMClient",
+  "82": "LLMManager",
+  "83": "scraper.py",
+  "84": "._build_token_usage",
+  "85": "SelectorProfileValidator",
+  "86": "debug_unstop_pagination.py",
+  "87": "._dispatch_map"
 }
