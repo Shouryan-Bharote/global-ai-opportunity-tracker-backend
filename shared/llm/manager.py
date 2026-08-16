@@ -11,9 +11,9 @@ from shared.llm.models import (
     LLMResponse,
     LLMTask,
 )
-from shared.llm.parser import LLMParser
+from shared.llm.parser import ResponseParser
 from shared.llm.prompt_builder import PromptBuilder
-from shared.llm.selector_profile import SelectorProfile
+from shared.llm.selector_profile import GenerationMetadata, SelectorProfile
 from shared.llm.validator import SelectorProfileValidator
 
 T = TypeVar("T", bound=BaseModel)
@@ -69,6 +69,16 @@ class LLMManager:
 
         SelectorProfileValidator.validate(profile)
 
+        # Inject accurate metadata (overrides whatever the LLM guessed)
+        profile = profile.model_copy(
+            update={
+                "metadata": GenerationMetadata(
+                    llm_provider=provider.value,
+                    llm_model=model,
+                )
+            }
+        )
+
         logger.debug(
             "Selector profile validation succeeded for website=%s",
             website,
@@ -119,4 +129,4 @@ class LLMManager:
             model.__name__,
         )
 
-        return LLMParser.parse(content, model)
+        return ResponseParser.parse(content, model)

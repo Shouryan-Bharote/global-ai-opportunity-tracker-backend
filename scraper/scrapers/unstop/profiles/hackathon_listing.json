@@ -1,0 +1,182 @@
+{
+  "website": "unstop.com",
+  "page_type": "hackathon_listing_card",
+  "fields": [
+    {
+      "name": "title",
+      "description": "The title of the hackathon",
+      "required": true,
+      "default": null,
+      "extraction_type": "text",
+      "attribute": null,
+      "selectors": [
+        {
+          "type": "css",
+          "value": "h3",
+          "priority": 1,
+          "confidence": 0.95,
+          "wait_for": false,
+          "timeout": null
+        },
+        {
+          "type": "css",
+          "value": "h3.double-wrap",
+          "priority": 2,
+          "confidence": 0.9,
+          "wait_for": false,
+          "timeout": null
+        },
+        {
+          "type": "css",
+          "value": "h3[itemprop='name']",
+          "priority": 3,
+          "confidence": 0.85,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "description",
+      "description": "The subtitle or short description of the hackathon",
+      "required": false,
+      "default": null,
+      "extraction_type": "text",
+      "attribute": null,
+      "selectors": [
+        {
+          "type": "css",
+          "value": "p.single-wrap",
+          "priority": 1,
+          "confidence": 0.8,
+          "wait_for": false,
+          "timeout": null
+        },
+        {
+          "type": "css",
+          "value": "p",
+          "priority": 2,
+          "confidence": 0.7,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "image_url",
+      "description": "The logo or banner image URL",
+      "required": false,
+      "default": null,
+      "extraction_type": "attribute",
+      "attribute": "src",
+      "selectors": [
+        {
+          "type": "css",
+          "value": "img",
+          "priority": 1,
+          "confidence": 0.9,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "source_url",
+      "description": "The detail page URL",
+      "required": false,
+      "default": null,
+      "extraction_type": "attribute",
+      "attribute": "content",
+      "selectors": [
+        {
+          "type": "css",
+          "value": "meta[itemprop='url']",
+          "priority": 1,
+          "confidence": 0.95,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "tags",
+      "description": "Tags and categories",
+      "required": false,
+      "default": [],
+      "extraction_type": "list",
+      "attribute": null,
+      "selectors": [
+        {
+          "type": "css",
+          "value": ".chip_text",
+          "priority": 1,
+          "confidence": 0.8,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "team_size_min",
+      "description": "Minimum team size",
+      "required": false,
+      "default": null,
+      "extraction_type": "text",
+      "attribute": null,
+      "selectors": [
+        {
+          "type": "css",
+          "value": ".other_fields span",
+          "priority": 1,
+          "confidence": 0.5,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "team_size_max",
+      "description": "Maximum team size",
+      "required": false,
+      "default": null,
+      "extraction_type": "text",
+      "attribute": null,
+      "selectors": [
+        {
+          "type": "css",
+          "value": ".other_fields span",
+          "priority": 1,
+          "confidence": 0.5,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    },
+    {
+      "name": "registration_fee",
+      "description": "Registration fee",
+      "required": false,
+      "default": null,
+      "extraction_type": "text",
+      "attribute": null,
+      "selectors": [
+        {
+          "type": "css",
+          "value": ".cash_container",
+          "priority": 1,
+          "confidence": 0.5,
+          "wait_for": false,
+          "timeout": null
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "llm_provider": "groq",
+    "llm_model": "groq/llama-3.3-70b-versatile",
+    "profile_version": 1,
+    "prompt_version": 1,
+    "generated_at": "2026-08-16T15:23:00.000000Z",
+    "notes": "Hand-tuned card selectors for Unstop list items"
+  }
+}
