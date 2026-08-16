@@ -209,13 +209,13 @@ class OpportunityParser(BaseParser[Opportunity]):
         """
         return data
 
-    # def _postprocess(self, opportunity: Opportunity) -> Opportunity:
-    #     """Postprocess the parsed Opportunity.
+    def _postprocess(self, opportunity: Opportunity) -> Opportunity:
+        """Postprocess the parsed Opportunity.
 
-    #     Canonical behavior returns the Opportunity unchanged.
-    #     Subclasses may override to perform site-specific normalization steps.
-    #     """
-    #     return opportunity
+        Canonical behavior returns the Opportunity unchanged.
+        Subclasses may override to perform site-specific normalization steps.
+        """
+        return opportunity
 
     def _get(self, raw_data: Mapping[str, object], key: str) -> object:
         """Gets a value from the raw mapping using ParserUtils.safe_get()."""

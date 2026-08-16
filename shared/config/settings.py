@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # API Keys
     # ======================
 
-    google_ai_api_key: str = ""
+    gemini_api_key: str = ""
     groq_api_key: str = ""
     openrouter_api_key: str = ""
 

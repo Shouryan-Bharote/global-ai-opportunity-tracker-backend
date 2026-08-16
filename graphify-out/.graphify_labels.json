@@ -12,7 +12,6 @@
   "10": "ResponseParser",
   "11": "test_base_scraper.py",
   "12": ".create_context",
-  "13": ".is_running",
   "14": "PromptTemplates",
   "15": ".get",
   "16": "formats.py",
@@ -77,5 +76,9 @@
   "75": "Known Issues",
   "76": "Task Queue",
   "77": ".parse",
-  "78": "agent-progress.md"
+  "78": "agent-progress.md",
+  "79": ".parse",
+  "80": "debug_unstop_selectors.py",
+  "85": "SelectorProfileValidator",
+  "86": "debug_unstop_pagination.py"
 }

@@ -136,7 +136,10 @@ class SelectorEngine:
         locator: Locator,
     ) -> str | None:
         """Extract normalized text content from the first matched element."""
-        raw = await locator.first.text_content()
+        try:
+            raw = await locator.first.text_content(timeout=3000)
+        except Exception:
+            return None
         if raw is None:
             return None
         text = " ".join(raw.split())
@@ -153,7 +156,10 @@ class SelectorEngine:
                 f"Field '{field.name}' uses ATTRIBUTE extraction but "
                 f"no attribute name is specified."
             )
-        return await locator.first.get_attribute(field.attribute)
+        try:
+            return await locator.first.get_attribute(field.attribute, timeout=3000)
+        except Exception:
+            return None
 
     async def _extract_html(
         self,
@@ -161,7 +167,10 @@ class SelectorEngine:
         locator: Locator,
     ) -> str | None:
         """Extract the inner HTML of the first matched element."""
-        html = await locator.first.inner_html()
+        try:
+            html = await locator.first.inner_html(timeout=3000)
+        except Exception:
+            return None
         return html or None
 
     async def _extract_list(
@@ -170,9 +179,11 @@ class SelectorEngine:
         locator: Locator,
     ) -> list[str]:
         """Extract text from all matched elements as a list."""
-        elements = locator.all()
-        raw_texts = await locator.all_text_contents()
-        return [" ".join(t.split()) for t in raw_texts if t.strip()]
+        try:
+            raw_texts = await locator.all_text_contents()
+            return [" ".join(t.split()) for t in raw_texts if t.strip()]
+        except Exception:
+            return []
 
     async def _extract_table(
         self,

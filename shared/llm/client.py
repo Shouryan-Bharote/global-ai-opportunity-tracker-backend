@@ -1,10 +1,10 @@
 import time
 
+import openai
 from litellm import ModelResponse, acompletion
 from litellm.exceptions import (
     APIError,
     AuthenticationError,
-    LiteLLMException,
     RateLimitError,
     Timeout as LiteLLMTimeout,
 )
@@ -87,7 +87,7 @@ class LiteLLMClient:
             )
             raise LLMProviderError(str(e)) from e
 
-        except LiteLLMException as e:
+        except openai.OpenAIError as e:
             logger.exception("Unexpected LiteLLM error.")
             raise LLMError(f"Unexpected LiteLLM error: {e}") from e
 

@@ -137,7 +137,7 @@ class GenerationMetadata(BaseModel):
 class SelectorProfile(BaseModel):
     """Represents a complete selector profile for a webpage."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, populate_by_name=True)
 
     website: str = Field(
         description="Website or domain this profile belongs to."
@@ -148,6 +148,7 @@ class SelectorProfile(BaseModel):
     fields: list[ExtractionField] = Field(
         description="Fields that should be extracted from the page."
     )
-    metadata: GenerationMetadata = Field(
+    metadata: GenerationMetadata | None = Field(
+        default=None,
         description="Information about how the profile was generated."
     )

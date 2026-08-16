@@ -1,0 +1,730 @@
+{
+  "communities": {
+    "0": [
+      "modelresponse",
+      "shared_llm_client",
+      "shared_llm_client_litellmclient",
+      "shared_llm_client_litellmclient_build_token_usage",
+      "shared_llm_client_litellmclient_generate",
+      "shared_llm_client_litellmclient_validate_request",
+      "shared_llm_client_rationale_120",
+      "shared_llm_client_rationale_137",
+      "shared_llm_client_rationale_30",
+      "shared_llm_client_rationale_33",
+      "shared_llm_exceptions",
+      "shared_llm_exceptions_llmauthenticationerror",
+      "shared_llm_exceptions_llmerror",
+      "shared_llm_exceptions_llmprovidererror",
+      "shared_llm_exceptions_llmratelimiterror",
+      "shared_llm_exceptions_llmresponseparseerror",
+      "shared_llm_exceptions_llmtimeouterror",
+      "shared_llm_exceptions_llmvalidationerror",
+      "shared_llm_exceptions_rationale_10",
+      "shared_llm_exceptions_rationale_14",
+      "shared_llm_exceptions_rationale_18",
+      "shared_llm_exceptions_rationale_2",
+      "shared_llm_exceptions_rationale_22",
+      "shared_llm_exceptions_rationale_26",
+      "shared_llm_exceptions_rationale_6",
+      "shared_llm_manager",
+      "shared_llm_manager_llmmanager",
+      "shared_llm_manager_llmmanager_execute_request",
+      "shared_llm_manager_llmmanager_generate_selector_profile",
+      "shared_llm_manager_llmmanager_init",
+      "shared_llm_manager_llmmanager_parse_response",
+      "shared_llm_manager_py_t",
+      "shared_llm_manager_rationale_115",
+      "shared_llm_manager_rationale_23",
+      "shared_llm_manager_rationale_26",
+      "shared_llm_manager_rationale_39",
+      "shared_llm_manager_rationale_92",
+      "shared_llm_models",
+      "shared_llm_models_llmprovider",
+      "shared_llm_models_llmrequest",
+      "shared_llm_models_llmresponse",
+      "shared_llm_models_llmtask",
+      "shared_llm_models_rationale_15",
+      "shared_llm_models_rationale_23",
+      "shared_llm_models_rationale_45",
+      "shared_llm_models_rationale_7",
+      "shared_llm_models_rationale_85",
+      "shared_llm_models_tokenusage",
+      "shared_llm_parser",
+      "shared_llm_prompt_builder",
+      "shared_llm_providers",
+      "shared_llm_providers_providerconfig",
+      "shared_llm_providers_providers",
+      "shared_llm_providers_providers_api_key",
+      "shared_llm_providers_providers_default_model",
+      "shared_llm_providers_providers_fallback_model",
+      "shared_llm_providers_providers_get",
+      "shared_llm_providers_providers_has_api_key",
+      "shared_llm_providers_providers_new",
+      "shared_llm_providers_providers_provider_name",
+      "shared_llm_providers_rationale_10",
+      "shared_llm_providers_rationale_20",
+      "shared_llm_providers_rationale_47",
+      "shared_llm_providers_rationale_52",
+      "shared_llm_providers_rationale_70",
+      "shared_llm_providers_rationale_75",
+      "shared_llm_providers_rationale_81",
+      "shared_llm_providers_rationale_86",
+      "shared_llm_providers_rationale_91",
+      "shared_llm_selector_profile_rationale_138",
+      "shared_llm_selector_profile_selectorprofile",
+      "shared_llm_validator",
+      "shared_llm_validator_rationale_10",
+      "shared_llm_validator_rationale_17",
+      "shared_llm_validator_selectorprofilevalidator",
+      "shared_llm_validator_selectorprofilevalidator_init",
+      "shared_llm_validator_selectorprofilevalidator_validate"
+    ],
+    "1": [
+      "basemodel",
+      "noreturn",
+      "scraper_parsers_opportunity_parser",
+      "scraper_parsers_opportunity_parser_opportunityparser",
+      "scraper_parsers_opportunity_parser_opportunityparser_get",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_bool",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_enum",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_float",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_int",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_list",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_metadata",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_prizes",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_required_model",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_string",
+      "scraper_parsers_opportunity_parser_opportunityparser_parse_url",
+      "scraper_parsers_opportunity_parser_opportunityparser_preprocess",
+      "scraper_parsers_opportunity_parser_opportunityparser_raise_required_field_error",
+      "scraper_parsers_opportunity_parser_opportunityparser_validate",
+      "scraper_parsers_opportunity_parser_py_e",
+      "scraper_parsers_opportunity_parser_py_t",
+      "scraper_parsers_opportunity_parser_rationale_168",
+      "scraper_parsers_opportunity_parser_rationale_202",
+      "scraper_parsers_opportunity_parser_rationale_221",
+      "scraper_parsers_opportunity_parser_rationale_225",
+      "scraper_parsers_opportunity_parser_rationale_229",
+      "scraper_parsers_opportunity_parser_rationale_233",
+      "scraper_parsers_opportunity_parser_rationale_243",
+      "scraper_parsers_opportunity_parser_rationale_26",
+      "scraper_parsers_opportunity_parser_rationale_275",
+      "scraper_parsers_opportunity_parser_rationale_29",
+      "scraper_parsers_opportunity_parser_rationale_308",
+      "scraper_parsers_opportunity_parser_rationale_318",
+      "scraper_parsers_opportunity_parser_rationale_331",
+      "scraper_parsers_opportunity_parser_rationale_342",
+      "scraper_parsers_opportunity_parser_rationale_346",
+      "scraper_parsers_opportunity_parser_rationale_353",
+      "shared_models_enums",
+      "shared_models_enums_currency",
+      "shared_models_enums_difficultylevel",
+      "shared_models_enums_locationtype",
+      "shared_models_enums_opportunitysource",
+      "shared_models_enums_opportunitystatus",
+      "shared_models_enums_opportunitytype",
+      "shared_models_enums_prizetype",
+      "shared_models_enums_rationale_22",
+      "shared_models_enums_rationale_33",
+      "shared_models_enums_rationale_4",
+      "shared_models_enums_rationale_42",
+      "shared_models_enums_rationale_52",
+      "shared_models_enums_rationale_64",
+      "shared_models_enums_rationale_77",
+      "shared_models_location",
+      "shared_models_location_location",
+      "shared_models_location_rationale_7",
+      "shared_models_metadata",
+      "shared_models_metadata_metadata",
+      "shared_models_metadata_rationale_9",
+      "shared_models_opportunity",
+      "shared_models_opportunity_opportunity",
+      "shared_models_opportunity_rationale_19",
+      "shared_models_organizer",
+      "shared_models_organizer_organizer",
+      "shared_models_organizer_rationale_5",
+      "shared_models_prize",
+      "shared_models_prize_prize",
+      "shared_models_prize_rationale_6",
+      "shared_models_timeline",
+      "shared_models_timeline_rationale_6",
+      "shared_models_timeline_timeline",
+      "strenum"
+    ],
+    "2": [
+      "scraper_parsers_normalizer",
+      "scraper_parsers_normalizer_normalizer",
+      "scraper_parsers_normalizer_normalizer_new",
+      "scraper_parsers_normalizer_normalizer_normalize_boolean",
+      "scraper_parsers_normalizer_normalizer_normalize_datetime",
+      "scraper_parsers_normalizer_normalizer_normalize_float",
+      "scraper_parsers_normalizer_normalizer_normalize_integer",
+      "scraper_parsers_normalizer_normalizer_normalize_list",
+      "scraper_parsers_normalizer_normalizer_normalize_string",
+      "scraper_parsers_normalizer_normalizer_normalize_url",
+      "scraper_parsers_normalizer_py_datetime",
+      "scraper_parsers_normalizer_rationale_10",
+      "scraper_parsers_normalizer_rationale_107",
+      "scraper_parsers_normalizer_rationale_15",
+      "scraper_parsers_normalizer_rationale_24",
+      "scraper_parsers_normalizer_rationale_44",
+      "scraper_parsers_normalizer_rationale_64",
+      "scraper_parsers_normalizer_rationale_7",
+      "scraper_parsers_normalizer_rationale_81",
+      "scraper_parsers_normalizer_rationale_95",
+      "scraper_parsers_parser_utils",
+      "scraper_parsers_parser_utils_parserutils",
+      "scraper_parsers_parser_utils_parserutils_build_model",
+      "scraper_parsers_parser_utils_parserutils_build_models",
+      "scraper_parsers_parser_utils_parserutils_get_bool",
+      "scraper_parsers_parser_utils_parserutils_get_datetime",
+      "scraper_parsers_parser_utils_parserutils_get_enum",
+      "scraper_parsers_parser_utils_parserutils_get_float",
+      "scraper_parsers_parser_utils_parserutils_get_int",
+      "scraper_parsers_parser_utils_parserutils_get_list",
+      "scraper_parsers_parser_utils_parserutils_get_string",
+      "scraper_parsers_parser_utils_parserutils_get_url",
+      "scraper_parsers_parser_utils_parserutils_new",
+      "scraper_parsers_parser_utils_parserutils_safe_get",
+      "scraper_parsers_parser_utils_py_datetime",
+      "scraper_parsers_parser_utils_py_e",
+      "scraper_parsers_parser_utils_py_t",
+      "scraper_parsers_parser_utils_rationale_105",
+      "scraper_parsers_parser_utils_rationale_119",
+      "scraper_parsers_parser_utils_rationale_17",
+      "scraper_parsers_parser_utils_rationale_20",
+      "scraper_parsers_parser_utils_rationale_25",
+      "scraper_parsers_parser_utils_rationale_30",
+      "scraper_parsers_parser_utils_rationale_35",
+      "scraper_parsers_parser_utils_rationale_40",
+      "scraper_parsers_parser_utils_rationale_45",
+      "scraper_parsers_parser_utils_rationale_50",
+      "scraper_parsers_parser_utils_rationale_55",
+      "scraper_parsers_parser_utils_rationale_64",
+      "scraper_parsers_parser_utils_rationale_93"
+    ],
+    "3": [
+      "extractionhandler",
+      "handler",
+      "locator",
+      "scraper_parsers_selector_engine",
+      "scraper_parsers_selector_engine_py_page",
+      "scraper_parsers_selector_engine_rationale_102",
+      "scraper_parsers_selector_engine_rationale_110",
+      "scraper_parsers_selector_engine_rationale_118",
+      "scraper_parsers_selector_engine_rationale_126",
+      "scraper_parsers_selector_engine_rationale_135",
+      "scraper_parsers_selector_engine_rationale_24",
+      "scraper_parsers_selector_engine_rationale_56",
+      "scraper_parsers_selector_engine_rationale_82",
+      "scraper_parsers_selector_engine_rationale_92",
+      "scraper_parsers_selector_engine_selectorengine",
+      "scraper_parsers_selector_engine_selectorengine_dispatch_map",
+      "scraper_parsers_selector_engine_selectorengine_extract",
+      "scraper_parsers_selector_engine_selectorengine_extract_attribute",
+      "scraper_parsers_selector_engine_selectorengine_extract_elements",
+      "scraper_parsers_selector_engine_selectorengine_extract_html",
+      "scraper_parsers_selector_engine_selectorengine_extract_json",
+      "scraper_parsers_selector_engine_selectorengine_extract_list",
+      "scraper_parsers_selector_engine_selectorengine_extract_table",
+      "scraper_parsers_selector_engine_selectorengine_extract_text",
+      "scraper_parsers_selector_engine_selectorengine_init",
+      "scraper_parsers_selector_engine_selectorengine_locator",
+      "shared_llm_selector_profile",
+      "shared_llm_selector_profile_extractionfield",
+      "shared_llm_selector_profile_extractionfield_ordered_selectors",
+      "shared_llm_selector_profile_extractionfield_primary_selector",
+      "shared_llm_selector_profile_extractiontype",
+      "shared_llm_selector_profile_generationmetadata",
+      "shared_llm_selector_profile_rationale_101",
+      "shared_llm_selector_profile_rationale_107",
+      "shared_llm_selector_profile_rationale_15",
+      "shared_llm_selector_profile_rationale_22",
+      "shared_llm_selector_profile_rationale_34",
+      "shared_llm_selector_profile_rationale_66",
+      "shared_llm_selector_profile_rationale_97",
+      "shared_llm_selector_profile_selector",
+      "shared_llm_selector_profile_selectortype"
+    ],
+    "4": [
+      "abc",
+      "scraper_parsers_base_parser",
+      "scraper_parsers_base_parser_baseparser",
+      "scraper_parsers_base_parser_baseparser_parse",
+      "scraper_parsers_base_parser_baseparser_preprocess",
+      "scraper_parsers_base_parser_baseparser_validate",
+      "scraper_parsers_base_parser_py_t",
+      "scraper_parsers_base_parser_rationale_11",
+      "scraper_parsers_base_parser_rationale_20",
+      "scraper_parsers_base_parser_rationale_36",
+      "scraper_parsers_base_parser_rationale_44",
+      "scraper_parsers_site_parser",
+      "scraper_parsers_site_parser_basesiteparser",
+      "scraper_parsers_site_parser_basesiteparser_init",
+      "scraper_parsers_site_parser_basesiteparser_parse",
+      "scraper_parsers_site_parser_basesiteparser_transform",
+      "scraper_parsers_site_parser_rationale_18",
+      "scraper_parsers_site_parser_rationale_29",
+      "scraper_parsers_site_parser_rationale_40",
+      "shared_logger_init",
+      "shared_logger_init_get_logger",
+      "shared_logger_init_rationale_4"
+    ],
+    "5": [
+      "baseexception",
+      "scraper_scrapers_base_base_scraper",
+      "scraper_scrapers_base_base_scraper_basescraper",
+      "scraper_scrapers_base_base_scraper_basescraper_aenter",
+      "scraper_scrapers_base_base_scraper_basescraper_aexit",
+      "scraper_scrapers_base_base_scraper_basescraper_browser_manager",
+      "scraper_scrapers_base_base_scraper_basescraper_goto",
+      "scraper_scrapers_base_base_scraper_basescraper_scrape",
+      "scraper_scrapers_base_base_scraper_basescraper_start",
+      "scraper_scrapers_base_base_scraper_basescraper_stop",
+      "scraper_scrapers_base_base_scraper_rationale_107",
+      "scraper_scrapers_base_base_scraper_rationale_113",
+      "scraper_scrapers_base_base_scraper_rationale_12",
+      "scraper_scrapers_base_base_scraper_rationale_129",
+      "scraper_scrapers_base_base_scraper_rationale_49",
+      "scraper_scrapers_base_base_scraper_rationale_59",
+      "scraper_scrapers_base_base_scraper_rationale_71",
+      "scraper_scrapers_base_base_scraper_rationale_88",
+      "scraper_scrapers_base_init",
+      "tests_scraper_scrapers_test_base_scraper_rationale_19",
+      "tests_scraper_scrapers_test_base_scraper_test_cannot_instantiate_base_scraper"
+    ],
+    "6": [
+      "examples_browser_basic_browser",
+      "examples_browser_basic_browser_main",
+      "scraper_core_browser_factory",
+      "scraper_core_browser_factory_browserfactory",
+      "scraper_core_browser_factory_browserfactory_new",
+      "scraper_core_browser_factory_rationale_13",
+      "scraper_core_browser_init",
+      "scraper_core_browser_manager",
+      "scraper_core_browser_manager_browsermanager",
+      "scraper_core_browser_manager_browsermanager_init",
+      "scraper_core_browser_manager_rationale_15",
+      "scraper_core_browser_manager_rationale_23",
+      "scraper_core_browser_models",
+      "scraper_core_browser_models_browserlaunchoptions",
+      "scraper_core_browser_models_rationale_14",
+      "scraper_core_browser_models_rationale_25",
+      "scraper_core_browser_models_rationale_6",
+      "scraper_core_browser_models_viewport",
+      "scraper_core_browser_models_viewport_to_patchright",
+      "scraper_scrapers_base_base_scraper_basescraper_init",
+      "scraper_scrapers_base_base_scraper_rationale_20"
+    ],
+    "7": [
+      "basesettings",
+      "coloredformatter",
+      "logger",
+      "shared_config_init",
+      "shared_config_settings",
+      "shared_config_settings_rationale_5",
+      "shared_config_settings_settings",
+      "shared_constants_logging",
+      "shared_constants_logging_loglevel",
+      "shared_logger_formatters",
+      "shared_logger_formatters_get_console_formatter",
+      "shared_logger_handlers",
+      "shared_logger_handlers_get_console_handler",
+      "shared_logger_logger",
+      "shared_logger_logger_create_logger",
+      "shared_logger_logger_rationale_8"
+    ],
+    "8": [
+      "exception",
+      "scraper_core_browser_manager_browsermanager_browser",
+      "scraper_core_browser_manager_browsermanager_context",
+      "scraper_core_browser_manager_browsermanager_new_page",
+      "scraper_core_browser_manager_py_browsercontext",
+      "scraper_core_browser_manager_py_page",
+      "scraper_core_browser_manager_rationale_107",
+      "scraper_core_browser_manager_rationale_121",
+      "scraper_core_browser_manager_rationale_65",
+      "scraper_core_exceptions_browser",
+      "scraper_core_exceptions_browser_browsererror",
+      "scraper_core_exceptions_browser_rationale_2",
+      "scraper_core_exceptions_init",
+      "scraper_scrapers_base_base_scraper_basescraper_page",
+      "scraper_scrapers_base_base_scraper_py_page",
+      "scraper_scrapers_base_base_scraper_rationale_32"
+    ],
+    "9": [
+      "scraper_parsers_selector_parser",
+      "scraper_parsers_selector_parser_py_page",
+      "scraper_parsers_selector_parser_rationale_11",
+      "scraper_parsers_selector_parser_rationale_32",
+      "scraper_parsers_selector_parser_rationale_51",
+      "scraper_parsers_selector_parser_rationale_52",
+      "scraper_parsers_selector_parser_rationale_57",
+      "scraper_parsers_selector_parser_rationale_69",
+      "scraper_parsers_selector_parser_rationale_77",
+      "scraper_parsers_selector_parser_rationale_78",
+      "scraper_parsers_selector_parser_selectorparser",
+      "scraper_parsers_selector_parser_selectorparser_extract_fields",
+      "scraper_parsers_selector_parser_selectorparser_init",
+      "scraper_parsers_selector_parser_selectorparser_parse",
+      "scraper_parsers_selector_parser_selectorparser_postprocess",
+      "scraper_parsers_selector_parser_selectorparser_validate_profile"
+    ],
+    "10": [
+      "shared_llm_parser_py_any",
+      "shared_llm_parser_py_t",
+      "shared_llm_parser_rationale_113",
+      "shared_llm_parser_rationale_124",
+      "shared_llm_parser_rationale_21",
+      "shared_llm_parser_rationale_25",
+      "shared_llm_parser_rationale_59",
+      "shared_llm_parser_rationale_64",
+      "shared_llm_parser_rationale_74",
+      "shared_llm_parser_responseparser",
+      "shared_llm_parser_responseparser_extract_json",
+      "shared_llm_parser_responseparser_load_json",
+      "shared_llm_parser_responseparser_parse",
+      "shared_llm_parser_responseparser_parse_selector_profile",
+      "shared_llm_parser_responseparser_strip_markdown",
+      "shared_llm_parser_responseparser_validate"
+    ],
+    "11": [
+      "tests_scraper_scrapers_test_base_scraper",
+      "tests_scraper_scrapers_test_base_scraper_concretescraper",
+      "tests_scraper_scrapers_test_base_scraper_concretescraper_scrape",
+      "tests_scraper_scrapers_test_base_scraper_rationale_110",
+      "tests_scraper_scrapers_test_base_scraper_rationale_12",
+      "tests_scraper_scrapers_test_base_scraper_rationale_145",
+      "tests_scraper_scrapers_test_base_scraper_rationale_26",
+      "tests_scraper_scrapers_test_base_scraper_rationale_41",
+      "tests_scraper_scrapers_test_base_scraper_rationale_53",
+      "tests_scraper_scrapers_test_base_scraper_rationale_79",
+      "tests_scraper_scrapers_test_base_scraper_test_async_context_manager",
+      "tests_scraper_scrapers_test_base_scraper_test_goto_navigation",
+      "tests_scraper_scrapers_test_base_scraper_test_init_with_options",
+      "tests_scraper_scrapers_test_base_scraper_test_page_property_error_before_start",
+      "tests_scraper_scrapers_test_base_scraper_test_start_lifecycle",
+      "tests_scraper_scrapers_test_base_scraper_test_stop_lifecycle"
+    ],
+    "12": [
+      "playwright",
+      "scraper_core_browser_factory_browserfactory_create_context",
+      "scraper_core_browser_factory_browserfactory_launch_browser",
+      "scraper_core_browser_factory_browserfactory_start_playwright",
+      "scraper_core_browser_factory_py_browsercontext",
+      "scraper_core_browser_factory_rationale_22",
+      "scraper_core_browser_factory_rationale_32",
+      "scraper_core_browser_factory_rationale_47",
+      "scraper_core_browser_manager_browsermanager_start",
+      "scraper_core_browser_manager_rationale_37",
+      "shared_constants_browser",
+      "shared_constants_browser_browser",
+      "shared_constants_browser_browserengine"
+    ],
+    "13": [
+      "scraper_core_browser_manager_browsermanager_close",
+      "scraper_core_browser_manager_browsermanager_is_running",
+      "scraper_core_browser_manager_rationale_134",
+      "scraper_core_browser_manager_rationale_80"
+    ],
+    "14": [
+      "shared_llm_templates",
+      "shared_llm_templates_prompttemplates",
+      "shared_llm_templates_prompttemplates_new",
+      "shared_llm_templates_rationale_5"
+    ],
+    "15": [
+      "shared_models_metadata_metadata_get",
+      "shared_models_metadata_py_any",
+      "shared_models_metadata_rationale_25"
+    ],
+    "16": [
+      "shared_constants_formats",
+      "shared_constants_formats_dateformat"
+    ],
+    "17": [
+      "shared_constants_llm",
+      "shared_constants_llm_llm"
+    ],
+    "18": [
+      "shared_constants_scraper",
+      "shared_constants_scraper_scraper"
+    ],
+    "19": [
+      "pkg_trackit_backend"
+    ],
+    "20": [
+      "scraper_core_browser_config"
+    ],
+    "21": [
+      "scraper_core_browser_protocols"
+    ],
+    "22": [
+      "scraper_core_browser_session"
+    ],
+    "23": [
+      "scraper_core_browser_stealth"
+    ],
+    "24": [
+      "scraper_core_manager_init"
+    ],
+    "25": [
+      "scraper_core_manager_scraper_manager"
+    ],
+    "26": [
+      "scraper_core_scheduler_init"
+    ],
+    "27": [
+      "scraper_core_scheduler_job_scheduler"
+    ],
+    "28": [
+      "scraper_data_init"
+    ],
+    "29": [
+      "scraper_exporters_init"
+    ],
+    "30": [
+      "scraper_parsers_init"
+    ],
+    "31": [
+      "scraper_scrapers_devpost_init"
+    ],
+    "32": [
+      "scraper_scrapers_hack2skill_init"
+    ],
+    "33": [
+      "scraper_scrapers_kaggle_init"
+    ],
+    "34": [
+      "scraper_scrapers_unstop_init"
+    ],
+    "35": [
+      "scraper_scrapers_unstop_parser"
+    ],
+    "36": [
+      "scraper_scrapers_unstop_scraper"
+    ],
+    "37": [
+      "shared_constants_files"
+    ],
+    "38": [
+      "shared_constants_init"
+    ],
+    "39": [
+      "shared_database_init"
+    ],
+    "40": [
+      "shared_exceptions_init"
+    ],
+    "41": [
+      "shared_init"
+    ],
+    "42": [
+      "shared_llm_init"
+    ],
+    "43": [
+      "shared_logger_filters"
+    ],
+    "44": [
+      "shared_models_init"
+    ],
+    "45": [
+      "shared_utils_init"
+    ]
+  },
+  "cohesion": {
+    "0": 0.05570745044429255,
+    "1": 0.06438631790744467,
+    "2": 0.053061224489795916,
+    "3": 0.06707317073170732,
+    "4": 0.12121212121212122,
+    "5": 0.10952380952380952,
+    "6": 0.18571428571428572,
+    "7": 0.19166666666666668,
+    "8": 0.13333333333333333,
+    "9": 0.15833333333333333,
+    "10": 0.18333333333333332,
+    "11": 0.175,
+    "12": 0.1794871794871795,
+    "13": 0.5,
+    "14": 0.5,
+    "15": 0.6666666666666666,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0
+  },
+  "gods": [
+    {
+      "id": "scraper_parsers_opportunity_parser_opportunityparser",
+      "label": "OpportunityParser",
+      "degree": 31
+    },
+    {
+      "id": "scraper_core_browser_models_browserlaunchoptions",
+      "label": "BrowserLaunchOptions",
+      "degree": 19
+    },
+    {
+      "id": "shared_models_opportunity_opportunity",
+      "label": "Opportunity",
+      "degree": 18
+    },
+    {
+      "id": "scraper_core_browser_manager_browsermanager",
+      "label": "BrowserManager",
+      "degree": 17
+    },
+    {
+      "id": "scraper_parsers_parser_utils_parserutils",
+      "label": "ParserUtils",
+      "degree": 17
+    },
+    {
+      "id": "scraper_scrapers_base_base_scraper_basescraper",
+      "label": "BaseScraper",
+      "degree": 17
+    },
+    {
+      "id": "shared_llm_selector_profile_selector",
+      "label": "Selector",
+      "degree": 16
+    },
+    {
+      "id": "scraper_parsers_selector_engine_selectorengine",
+      "label": "SelectorEngine",
+      "degree": 15
+    },
+    {
+      "id": "shared_llm_client_litellmclient",
+      "label": "LiteLLMClient",
+      "degree": 15
+    },
+    {
+      "id": "shared_llm_exceptions_llmvalidationerror",
+      "label": "LLMValidationError",
+      "degree": 15
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ConcreteScraper",
+      "target": "BrowserLaunchOptions",
+      "source_files": [
+        "tests/scraper/scrapers/test_base_scraper.py",
+        "scraper/core/browser/models.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "SelectorParser",
+      "target": "SelectorProfile",
+      "source_files": [
+        "scraper/parsers/selector_parser.py",
+        "shared/llm/selector_profile.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "BaseSiteParser",
+      "target": "Opportunity",
+      "source_files": [
+        "scraper/parsers/site_parser.py",
+        "shared/models/opportunity.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "test_init_with_options()",
+      "target": "BrowserLaunchOptions",
+      "source_files": [
+        "tests/scraper/scrapers/test_base_scraper.py",
+        "scraper/core/browser/models.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "OpportunityParser",
+      "target": "DifficultyLevel",
+      "source_files": [
+        "scraper/parsers/opportunity_parser.py",
+        "shared/models/enums.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `OpportunityParser` connect `Community 1` to `Community 2`, `Community 4`?",
+      "why": "High betweenness centrality (0.175) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `BrowserLaunchOptions` connect `Community 6` to `Community 1`, `Community 11`, `Community 12`, `Community 5`?",
+      "why": "High betweenness centrality (0.171) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `SelectorProfile` connect `Community 0` to `Community 9`, `Community 10`, `Community 3`, `Community 1`?",
+      "why": "High betweenness centrality (0.126) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 12 inferred relationships involving `OpportunityParser` (e.g. with `BaseParser` and `ParserUtils`) actually correct?",
+      "why": "`OpportunityParser` has 12 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 4 inferred relationships involving `BrowserLaunchOptions` (e.g. with `BrowserFactory` and `BrowserManager`) actually correct?",
+      "why": "`BrowserLaunchOptions` has 4 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 11 inferred relationships involving `Opportunity` (e.g. with `OpportunityParser` and `BaseSiteParser`) actually correct?",
+      "why": "`Opportunity` has 11 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `BrowserManager` (e.g. with `BrowserFactory` and `BrowserLaunchOptions`) actually correct?",
+      "why": "`BrowserManager` has 2 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
+}
