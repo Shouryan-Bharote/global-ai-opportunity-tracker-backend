@@ -15,6 +15,7 @@ from shared.llm.client import LiteLLMClient
 from shared.llm.manager import LLMManager
 from shared.llm.models import LLMProvider
 from shared.llm.providers import Providers
+from shared.llm.selector_profile import SelectorProfile
 from shared.logger import get_logger
 from shared.models.enums import OpportunityField, OpportunitySource
 from shared.models.opportunity import Opportunity
@@ -37,7 +38,7 @@ DEFAULT_EVENT_TYPES = [
 ]
 
 # Fields we ask the LLM to generate selectors for (card-level extraction)
-_TARGET_FIELDS: list[str] = [
+_TARGET_FIELDS: list[OpportunityField] = [
     OpportunityField.TITLE,
     OpportunityField.DESCRIPTION,
     OpportunityField.IMAGE_URL,
@@ -47,6 +48,22 @@ _TARGET_FIELDS: list[str] = [
     OpportunityField.TEAM_SIZE_MAX,
     OpportunityField.REGISTRATION_FEE,
 ]
+
+# Maps Unstop URL slug → OpportunityType string value
+# Using a dict avoids fragile .rstrip('s') tricks (e.g. "quizzes" → "quizze")
+_EVENT_TYPE_MAP: dict[str, str] = {
+    "hackathons": "hackathon",
+    "competitions": "competition",
+    "quizzes": "quiz",
+    "conferences": "conference",
+    "workshops": "workshop",
+    "fellowships": "fellowship",
+    "internships": "internship",
+    "scholarships": "scholarship",
+    "bootcamps": "bootcamp",
+    "courses": "course",
+    "challenges": "challenge",
+}
 
 # Real Unstop card selectors (discovered from live page DOM inspection)
 _CARD_SELECTORS = [
@@ -122,78 +139,92 @@ class UnstopScraper(BaseScraper):
         """
         seen_urls: set[str] = set()
         opportunities: list[Opportunity] = []
-
         profile = None
 
-        for event_type in self._event_types:
-            target_url = self._build_target_url(event_type)
-            logger.info("Scraping Unstop category: %s (url=%s)", event_type, target_url)
+        if not self.browser_manager.is_running():
+            await self.start()
 
-            await self.goto(target_url, wait_until="domcontentloaded")
-            await self._dismiss_cookie_banner()
-            await self._dismiss_login_modal()
-            await self._wait_for_cards()
+        try:
+            for event_type in self._event_types:
+                target_url = self._build_target_url(event_type)
+                logger.info("Scraping Unstop category: %s (url=%s)", event_type, target_url)
 
-            if profile is None:
-                profile = await self._get_or_generate_profile()
-
-            selector_parser = SelectorParser(profile)
-            pages_scraped = 0
-
-            while pages_scraped < _MAX_PAGES:
-                logger.info("Scraping %s — page %d/%d", event_type, pages_scraped + 1, _MAX_PAGES)
-
-                cards = await self._locate_cards()
-                card_count = await cards.count()
-
-                logger.info("Found %d opportunity cards on this page.", card_count)
-
-                for i in range(card_count):
-                    card = cards.nth(i)
-                    try:
-                        raw_data = await selector_parser.parse(card)  # type: ignore[arg-type]
-                        source_url = raw_data.get("source_url") or target_url
-
-                        if source_url in seen_urls:
-                            logger.debug("Duplicate opportunity skipped: %s", source_url)
-                            continue
-
-                        raw_data["source"] = OpportunitySource.UNSTOP
-                        raw_data["source_url"] = source_url
-                        raw_data["id"] = source_url
-                        raw_data["type"] = event_type.rstrip("s")  # e.g. hackathons -> hackathon
-                        raw_data["status"] = "open"
-                        raw_data.setdefault("organizer", {"name": "Unstop"})
-                        raw_data.setdefault("location", {"type": "online"})
-                        raw_data.setdefault("timeline", {})
-
-                        opportunity = self._opportunity_parser.parse(raw_data)
-                        opportunities.append(opportunity)
-                        seen_urls.add(source_url)
-                        logger.debug("Parsed opportunity: %s", opportunity.title)
-
-                    except Exception:
-                        logger.warning(
-                            "Failed to parse card %d on %s page %d — skipping.",
-                            i,
-                            event_type,
-                            pages_scraped + 1,
-                            exc_info=True,
-                        )
-
-                current_page = pages_scraped + 1
-                pages_scraped += 1
-
-                if pages_scraped >= _MAX_PAGES:
-                    logger.info("Reached max pages limit (%d) for %s — moving to next type.", _MAX_PAGES, event_type)
-                    break
-
-                if not await self._click_next_page(current_page):
-                    logger.info("No next page button for %s — moving to next type.", event_type)
-                    break
-
-                await asyncio.sleep(_PAGINATION_DELAY_S)
+                await self.goto(target_url, wait_until="domcontentloaded")
+                await self._dismiss_cookie_banner()
+                await self._dismiss_login_modal()
                 await self._wait_for_cards()
+
+                if profile is None:
+                    profile = await self._get_or_generate_profile()
+
+                selector_parser = SelectorParser(profile)
+                pages_scraped = 0
+
+                while pages_scraped < _MAX_PAGES:
+                    logger.info("Scraping %s — page %d/%d", event_type, pages_scraped + 1, _MAX_PAGES)
+
+                    cards = await self._locate_cards()
+                    card_count = await cards.count()
+
+                    logger.info("Found %d opportunity cards on this page.", card_count)
+
+                    for i in range(card_count):
+                        card = cards.nth(i)
+                        try:
+                            raw_data = await selector_parser.parse(card)  # type: ignore[arg-type]
+                            source_url = raw_data.get("source_url") or target_url
+
+                            if source_url in seen_urls:
+                                logger.debug("Duplicate opportunity skipped: %s", source_url)
+                                continue
+
+                            # Normalize protocol-relative image URLs (//cdn...) → https://
+                            img = raw_data.get("image_url")
+                            if isinstance(img, str) and img.startswith("//"):
+                                raw_data["image_url"] = "https:" + img
+
+                            # Map event type slug to a valid OpportunityType string
+                            opp_type = _EVENT_TYPE_MAP.get(event_type, "other")
+
+                            raw_data["source"] = OpportunitySource.UNSTOP
+                            raw_data["source_url"] = source_url
+                            raw_data["id"] = source_url
+                            raw_data["type"] = opp_type
+                            raw_data["status"] = "open"
+                            raw_data.setdefault("organizer", {"name": "Unstop"})
+                            raw_data.setdefault("location", {"type": "online"})
+                            raw_data.setdefault("timeline", {})
+
+                            opportunity = self._opportunity_parser.parse(raw_data)
+                            opportunities.append(opportunity)
+                            seen_urls.add(source_url)
+                            logger.debug("Parsed opportunity: %s", opportunity.title)
+
+                        except Exception:
+                            logger.warning(
+                                "Failed to parse card %d on %s page %d — skipping.",
+                                i,
+                                event_type,
+                                pages_scraped + 1,
+                                exc_info=True,
+                            )
+
+                    current_page = pages_scraped + 1
+                    pages_scraped += 1
+
+                    if pages_scraped >= _MAX_PAGES:
+                        logger.info("Reached max pages limit (%d) for %s — moving to next type.", _MAX_PAGES, event_type)
+                        break
+
+                    if not await self._click_next_page(current_page):
+                        logger.info("No next page button for %s — moving to next type.", event_type)
+                        break
+
+                    await asyncio.sleep(_PAGINATION_DELAY_S)
+                    await self._wait_for_cards()
+
+        finally:
+            await self.stop()
 
         logger.info(
             "Unstop scrape complete: %d unique AI opportunities collected across %d categories.",
@@ -274,7 +305,7 @@ class UnstopScraper(BaseScraper):
         # Fallback: return an empty locator so the scrape loop exits gracefully
         return self.page.locator("__no_match__")
 
-    async def _get_or_generate_profile(self):
+    async def _get_or_generate_profile(self) -> SelectorProfile:
         """Load the saved SelectorProfile or generate a new one via the LLM.
 
         Returns:
@@ -303,7 +334,7 @@ class UnstopScraper(BaseScraper):
             website="unstop.com",
             page_type="hackathon_listing_card",
             html=card_html,
-            fields=[f.value for f in _TARGET_FIELDS],
+            fields=[str(f) for f in _TARGET_FIELDS],
         )
 
         self._profile_manager.save(profile)

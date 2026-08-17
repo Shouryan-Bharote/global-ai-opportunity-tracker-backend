@@ -14,15 +14,15 @@
           "type": "css",
           "value": ".main-content h3",
           "priority": 1,
-          "confidence": 0.9,
+          "confidence": 0.95,
           "wait_for": false,
           "timeout": null
         },
         {
-          "type": "xpath",
-          "value": "//div[@class='main-content']//h3",
+          "type": "css",
+          "value": "h3.mb-4",
           "priority": 2,
-          "confidence": 0.8,
+          "confidence": 0.9,
           "wait_for": false,
           "timeout": null
         }
@@ -30,8 +30,8 @@
     },
     {
       "name": "description",
-      "description": "Description of the hackathon",
-      "required": true,
+      "description": "Description/inner HTML of the hackathon card",
+      "required": false,
       "default": null,
       "extraction_type": "html",
       "attribute": null,
@@ -45,8 +45,8 @@
           "timeout": null
         },
         {
-          "type": "xpath",
-          "value": "//div[@class='content']",
+          "type": "css",
+          "value": ".main-content",
           "priority": 2,
           "confidence": 0.6,
           "wait_for": false,
@@ -56,25 +56,25 @@
     },
     {
       "name": "image_url",
-      "description": "URL of the hackathon image",
-      "required": true,
+      "description": "Thumbnail image URL of the hackathon",
+      "required": false,
       "default": null,
       "extraction_type": "attribute",
       "attribute": "src",
       "selectors": [
         {
           "type": "css",
-          "value": ".hackathon-thumbnail",
+          "value": "img.hackathon-thumbnail",
           "priority": 1,
-          "confidence": 0.9,
+          "confidence": 0.95,
           "wait_for": false,
           "timeout": null
         },
         {
-          "type": "xpath",
-          "value": "//img[@class='hackathon-thumbnail']",
+          "type": "css",
+          "value": ".main-content img",
           "priority": 2,
-          "confidence": 0.8,
+          "confidence": 0.75,
           "wait_for": false,
           "timeout": null
         }
@@ -82,7 +82,7 @@
     },
     {
       "name": "source_url",
-      "description": "URL of the hackathon source",
+      "description": "URL of the hackathon page",
       "required": true,
       "default": null,
       "extraction_type": "attribute",
@@ -90,17 +90,17 @@
       "selectors": [
         {
           "type": "css",
-          "value": ".tile-anchor",
+          "value": "a.tile-anchor",
           "priority": 1,
-          "confidence": 0.9,
+          "confidence": 0.95,
           "wait_for": false,
           "timeout": null
         },
         {
-          "type": "xpath",
-          "value": "//a[@class='tile-anchor']",
+          "type": "css",
+          "value": ".flex-row.tile-anchor",
           "priority": 2,
-          "confidence": 0.8,
+          "confidence": 0.9,
           "wait_for": false,
           "timeout": null
         }
@@ -108,8 +108,8 @@
     },
     {
       "name": "tags",
-      "description": "Tags of the hackathon",
-      "required": true,
+      "description": "Theme/category tags for the hackathon",
+      "required": false,
       "default": null,
       "extraction_type": "list",
       "attribute": null,
@@ -118,41 +118,15 @@
           "type": "css",
           "value": ".theme-label",
           "priority": 1,
-          "confidence": 0.8,
+          "confidence": 0.9,
           "wait_for": false,
           "timeout": null
         },
-        {
-          "type": "xpath",
-          "value": "//span[@class='theme-label']",
-          "priority": 2,
-          "confidence": 0.7,
-          "wait_for": false,
-          "timeout": null
-        }
-      ]
-    },
-    {
-      "name": "registration_fee",
-      "description": "Registration fee of the hackathon",
-      "required": true,
-      "default": null,
-      "extraction_type": "text",
-      "attribute": null,
-      "selectors": [
         {
           "type": "css",
-          "value": ".prize-amount",
-          "priority": 1,
-          "confidence": 0.6,
-          "wait_for": false,
-          "timeout": null
-        },
-        {
-          "type": "xpath",
-          "value": "//span[@class='prize-amount']",
+          "value": ".themes .info .theme-label",
           "priority": 2,
-          "confidence": 0.5,
+          "confidence": 0.85,
           "wait_for": false,
           "timeout": null
         }
@@ -160,11 +134,11 @@
     }
   ],
   "metadata": {
-    "llm_provider": "groq",
-    "llm_model": "groq/llama-3.3-70b-versatile",
-    "profile_version": 1,
+    "llm_provider": "manual",
+    "llm_model": "human-authored",
+    "profile_version": 2,
     "prompt_version": 1,
-    "generated_at": "2026-08-16T12:32:37.431724Z",
-    "notes": null
+    "generated_at": "2026-08-17T14:30:00.000000Z",
+    "notes": "Manually authored from DOM inspection. registration_fee excluded — Devpost hackathons are free."
   }
 }

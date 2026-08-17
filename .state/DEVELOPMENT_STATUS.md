@@ -1,6 +1,30 @@
 # Development Status
 
-## Last Updated: 2026-08-16
+## Last Updated: 2026-08-17
+
+## Recent Changes
+
+### 2026-08-17 — LLM Infrastructure Hardening & Scraper Bug Fixes
+- **Switched** default LLM provider for both scrapers: **Groq = primary**, **Gemini = automatic fallback** (implemented in `LLMManager.generate_selector_profile()`).
+- **Updated** Groq model to `groq/groq/compound-mini` (non-reasoning, no `<think>` tags).
+- **Updated** Gemini model to `gemini/gemini-3.6-flash` (latest available per Google API).
+- **Added** `_strip_thinking_tags()` to `ResponseParser` — strips `<think>...</think>` blocks from Qwen/DeepSeek-R1 style reasoning models.
+- **Added** `_extract_markdown_code_block()` to `ResponseParser` — prioritises `\`\`\`json` code blocks over bare text to avoid misidentifying XPath/HTML fragments as JSON.
+- **Added** 503 retry with exponential backoff (2s/4s/8s, max 3 attempts) to `LiteLLMClient` via `ServiceUnavailableError` catch.
+- **Manually authored** `scraper/scrapers/devpost/profiles/devpost_selectors.json` — bypasses LLM dependency entirely for Devpost, based on confirmed DOM inspection.
+- **Fixed** `DevpostScraper`: 
+  - Missing `SelectorProfile` import.
+  - Protocol-relative image URL normalization (`//cdn…` → `https://cdn…`).
+  - Added warning when no cards found.
+  - **Replaced** URL-based pagination (`?page=N`) with **Infinite Scrolling** via DOM manipulation. Devpost ignores the page parameter and uses infinite scrolling, which previously caused the scraper to only extract the first 9 cards repeatedly. Now correctly extracts all dynamically loaded cards.
+- **Fixed** `UnstopScraper` (5 bugs):
+  - Missing `SelectorProfile` import.
+  - `scrape()` was calling `goto()` before `start()` — browser was uninitialised (crash on first run outside `async with`).
+  - `fields=[f.value for f in _TARGET_FIELDS]` — `_TARGET_FIELDS` was typed as `list[str]`, calling `.value` on strings → AttributeError.
+  - `event_type.rstrip("s")` → `"quizzes"` became `"quizze"` — replaced with `_EVENT_TYPE_MAP` lookup dict.
+  - Added return type annotation on `_get_or_generate_profile`.
+  - Protocol-relative image URL normalization added.
+
 
 ## Recent Changes
 

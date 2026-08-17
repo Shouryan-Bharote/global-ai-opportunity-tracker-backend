@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 
+from patchright.async_api import Locator
+
 from scraper.core.browser.models import BrowserLaunchOptions
 from scraper.parsers.opportunity_parser import OpportunityParser
 from scraper.parsers.selector_parser import SelectorParser
@@ -13,27 +15,34 @@ from shared.llm.client import LiteLLMClient
 from shared.llm.manager import LLMManager
 from shared.llm.models import LLMProvider
 from shared.llm.providers import Providers
+from shared.llm.selector_profile import SelectorProfile
 from shared.logger import get_logger
 from shared.models.enums import OpportunityField, OpportunitySource
 from shared.models.opportunity import Opportunity
 
 logger = get_logger(__name__)
 
-# Target AI search queries on Devpost
-DEFAULT_DEVPOST_QUERIES = [
-    "artificial intelligence",
-    "machine learning",
-    "data science",
-]
+# Devpost native filter URL for AI/ML theme hackathons (both online and in-person, open + upcoming)
+# We use the built-in filter system instead of search queries for accuracy.
+_DEVPOST_BASE_URL = (
+    "https://devpost.com/hackathons"
+    "?challenge_type[]=online"
+    "&challenge_type[]=in-person"
+    "&open_to[]=public"
+    "&status[]=upcoming"
+    "&status[]=open"
+    "&themes[]=Machine%20Learning%2FAI"
+)
 
-# Fields we ask the LLM to generate selectors for (card-level extraction)
+# Fields we ask the LLM to generate selectors for (card-level extraction).
+# NOTE: registration_fee is intentionally excluded — Devpost hackathons are free
+# and the prize-amount selector is easily confused with a fee by LLMs.
 _TARGET_FIELDS: list[str] = [
     OpportunityField.TITLE,
     OpportunityField.DESCRIPTION,
     OpportunityField.IMAGE_URL,
     OpportunityField.SOURCE_URL,
     OpportunityField.TAGS,
-    OpportunityField.REGISTRATION_FEE,
 ]
 
 # Real Devpost card selectors
@@ -57,30 +66,23 @@ class DevpostScraper(BaseScraper):
         self,
         options: BrowserLaunchOptions | None = None,
         provider: LLMProvider = LLMProvider.GROQ,
-        search_queries: list[str] | None = None,
     ) -> None:
         """Initialize DevpostScraper.
 
         Args:
             options: Browser launch options.
             provider: LLM provider for selector generation.
-            search_queries: List of search keywords to scrape on Devpost.
         """
         super().__init__(options)
         self._provider = provider
         self._model = Providers.default_model(provider)
-        self._search_queries = search_queries or DEFAULT_DEVPOST_QUERIES
         self._llm_manager = LLMManager(LiteLLMClient())
         self._profile_manager = DevpostProfileManager()
         self._opportunity_parser = OpportunityParser()
 
-    def _build_target_url(self, query: str, page_num: int = 1) -> str:
-        """Construct search listing URL for Devpost."""
-        formatted_query = query.replace(" ", "+")
-        url = f"https://devpost.com/hackathons?search={formatted_query}&challenge_type[]=online"
-        if page_num > 1:
-            url += f"&page={page_num}"
-        return url
+    def _build_target_url(self) -> str:
+        """Construct the Devpost AI/ML filtered listing URL."""
+        return _DEVPOST_BASE_URL
 
     async def scrape(self) -> list[Opportunity]:
         """Execute Devpost scraping pipeline across target search queries.
@@ -96,70 +98,89 @@ class DevpostScraper(BaseScraper):
         profile = None
 
         try:
-            for query in self._search_queries:
-                for page_num in range(1, _MAX_PAGES + 1):
-                    target_url = self._build_target_url(query, page_num)
-                    logger.info("Scraping Devpost query: '%s' (page %d, url=%s)", query, page_num, target_url)
+            target_url = self._build_target_url()
+            logger.info("Scraping Devpost AI/ML events (url=%s)", target_url)
 
-                    await self.goto(target_url, wait_until="domcontentloaded")
-                    await asyncio.sleep(2)
-                    await self._wait_for_cards()
+            await self.goto(target_url, wait_until="domcontentloaded")
+            await asyncio.sleep(2)
+            await self._wait_for_cards()
 
-                    if profile is None:
-                        profile = await self._get_or_generate_profile()
+            if profile is None:
+                profile = await self._get_or_generate_profile()
 
-                    selector_parser = SelectorParser(profile)
-                    cards = await self._locate_cards()
-                    card_count = await cards.count()
+            selector_parser = SelectorParser(profile)
+            
+            previous_count = 0
+            # Treat _MAX_PAGES as max scrolls + 1 initial load
+            for scroll_num in range(_MAX_PAGES):
+                cards = await self._locate_cards()
+                current_count = await cards.count()
 
-                    logger.info("Found %d opportunity cards on Devpost page %d.", card_count, page_num)
-                    if card_count == 0:
-                        break
+                if current_count == previous_count:
+                    logger.info("No more cards loaded after scroll %d — stopping.", scroll_num)
+                    break
 
-                    for i in range(card_count):
-                        card = cards.nth(i)
-                        try:
-                            raw_data = await selector_parser.parse(card)  # type: ignore[arg-type]
-                            source_url = raw_data.get("source_url") or target_url
+                logger.info("Found %d total opportunity cards on Devpost (newly loaded: %d).", 
+                            current_count, current_count - previous_count)
 
-                            # Clean up Devpost query ref params from URL
-                            if "?" in source_url:
-                                source_url = source_url.split("?")[0]
+                # Only parse the newly loaded cards
+                for i in range(previous_count, current_count):
+                    card = cards.nth(i)
+                    try:
+                        raw_data = await selector_parser.parse(card)  # type: ignore[arg-type]
+                        source_url = raw_data.get("source_url") or target_url
 
-                            if source_url in seen_urls:
-                                logger.debug("Duplicate Devpost opportunity skipped: %s", source_url)
-                                continue
+                        # Clean up Devpost query ref params from URL
+                        if "?" in source_url:
+                            source_url = source_url.split("?")[0]
 
-                            raw_data["source"] = OpportunitySource.DEVPOST
-                            raw_data["source_url"] = source_url
-                            raw_data["id"] = source_url
-                            raw_data["type"] = "hackathon"
-                            raw_data["status"] = "open"
-                            raw_data.setdefault("organizer", {"name": "Devpost"})
-                            raw_data.setdefault("location", {"type": "online"})
-                            raw_data.setdefault("timeline", {})
+                        if source_url in seen_urls:
+                            logger.debug("Duplicate Devpost opportunity skipped: %s", source_url)
+                            continue
 
-                            opportunity = self._opportunity_parser.parse(raw_data)
-                            opportunities.append(opportunity)
-                            seen_urls.add(source_url)
-                            logger.debug("Parsed Devpost opportunity: %s", opportunity.title)
+                        raw_data["source"] = OpportunitySource.DEVPOST
+                        raw_data["source_url"] = source_url
+                        raw_data["id"] = source_url
+                        raw_data["type"] = "hackathon"
+                        raw_data["status"] = "open"
+                        # Devpost hackathons are free — hard-code to avoid
+                        # LLM confusing prize counts with registration fees.
+                        raw_data["registration_fee"] = 0.0
+                        raw_data.setdefault("organizer", {"name": "Devpost"})
+                        raw_data.setdefault("location", {"type": "online"})
+                        raw_data.setdefault("timeline", {})
 
-                        except Exception:
-                            logger.warning(
-                                "Failed to parse card %d on Devpost query '%s' page %d — skipping.",
-                                i,
-                                query,
-                                page_num,
-                                exc_info=True,
-                            )
+                        # Normalize protocol-relative image URLs (//cdn...) → https://
+                        img = raw_data.get("image_url")
+                        if isinstance(img, str) and img.startswith("//"):
+                            raw_data["image_url"] = "https:" + img
+
+                        opportunity = self._opportunity_parser.parse(raw_data)
+                        opportunities.append(opportunity)
+                        seen_urls.add(source_url)
+                        logger.debug("Parsed Devpost opportunity: %s", opportunity.title)
+
+                    except Exception:
+                        logger.warning(
+                            "Failed to parse card %d on Devpost — skipping.",
+                            i,
+                            exc_info=True,
+                        )
+                
+                previous_count = current_count
+                
+                # Scroll down to load more if not on last iteration
+                if scroll_num < _MAX_PAGES - 1:
+                    logger.info("Scrolling down to load more Devpost events...")
+                    await self.page.keyboard.press("End")
+                    await asyncio.sleep(3)  # Wait for API and DOM update
 
         finally:
             await self.stop()
 
         logger.info(
-            "Devpost scrape complete: %d unique AI opportunities collected across %d queries.",
+            "Devpost scrape complete: %d unique AI/ML opportunities collected.",
             len(opportunities),
-            len(self._search_queries),
         )
         return opportunities
 
@@ -177,6 +198,9 @@ class DevpostScraper(BaseScraper):
                 return
             except Exception:
                 pass
+        logger.warning(
+            "No Devpost cards appeared using any known selector — page may have changed."
+        )
 
     async def _locate_cards(self) -> Locator:
         """Return a Patchright Locator matching all cards."""
