@@ -16,15 +16,19 @@
 - **Expanded** event type iteration across `hackathons`, `competitions`, `quizzes`, and `conferences`.
 - **Implemented** JavaScript DOM modal overlay purging in `_dismiss_login_modal()` to eliminate pointer event interception during pagination.
 - **Implemented** `BrowserManager.close()` exception safeguards for clean manual window shutdowns.
-- **Scraped** and validated **174 unique AI opportunities** saved to `scraper/data/outputs/unstop_opportunities.json`.
-- **Updated** Graphify knowledge graph (`graphify update .`).
+### 2026-08-16 — Devpost Concrete Scraper Implementation & Profile Folder Relocation (Phase 4D Milestone)
+- **Relocated** all `SelectorProfile` cached JSON files into their respective scraper folders (`scraper/scrapers/unstop/profiles/` and `scraper/scrapers/devpost/profiles/`).
+- **Implemented** `DevpostScraper` in `scraper/scrapers/devpost/scraper.py` extending `BaseScraper`.
+- **Implemented** `DevpostProfileManager` in `scraper/scrapers/devpost/profile_manager.py` storing profiles in local `profiles/` subdirectory.
+- **Scraped** and validated **27 global AI hackathons** from Devpost saved to `scraper/data/outputs/devpost_opportunities.json`.
+- **Updated** Graphify knowledge graph (770 nodes, 1255 edges).
 
 ## Build Status
 - ✅ All imports clean
 - ✅ No circular dependencies
-- ✅ LLM connectivity verified (Groq & Gemini)
 - ✅ Unstop multi-category AI scraper live validation passing (174/174 parsed)
-- ✅ Graphify knowledge graph current (734 nodes, 1159 edges)
+- ✅ Devpost AI scraper live validation passing (27/27 parsed)
+- ✅ Graphify knowledge graph current (769 nodes, 1254 edges)
 
 ## Next Actions
 See `.state/TASK_QUEUE.md`

@@ -1,7 +1,7 @@
 # Task Queue
 
 ## Active
-- [ ] **Build second concrete scraper** — Devpost, Hack2Skill, or Kaggle.
+- [ ] **Build Devpost Concrete Scraper** — AI hackathons & global challenges scraper (`scraper/scrapers/devpost/`).
 - [ ] **Write unit tests for parser layer** — `SelectorEngine`, `SelectorParser` test coverage.
 
 ## Backlog
@@ -10,7 +10,8 @@
 - [ ] Multi-provider fallback strategy (Groq → Gemini → OpenRouter)
 
 ## Completed
-- [x] Implement `UnstopScraper` and `UnstopProfileManager`
+- [x] Implement `DevpostScraper` and `DevpostProfileManager` (27 global AI hackathons parsed)
+- [x] Implement `UnstopScraper` and `UnstopProfileManager` (174 unique AI opportunities parsed)
 - [x] End-to-end verification of Unstop scraper (18 live opportunities parsed)
 - [x] Fix `OpportunityParser._postprocess()` bug
 - [x] Fix `SelectorEngine` timeout issue

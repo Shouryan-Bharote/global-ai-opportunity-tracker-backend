@@ -1,16 +1,16 @@
 # Graph Report - global-ai-opportunity-tracker-backend  (2026-08-16)
 
 ## Corpus Check
-- 113 files · ~62,170 words
+- 120 files · ~75,191 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 734 nodes · 1159 edges · 88 communities (75 shown, 13 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 79 edges (avg confidence: 0.5)
+- 770 nodes · 1255 edges · 85 communities (71 shown, 14 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 89 edges (avg confidence: 0.51)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `472d480c`
+- Built from commit: `06335b1d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -28,13 +28,14 @@
 - [[_COMMUNITY_ResponseParser|ResponseParser]]
 - [[_COMMUNITY_test_base_scraper.py|test_base_scraper.py]]
 - [[_COMMUNITY_.create_context|.create_context]]
-- [[_COMMUNITY_.is_running|.is_running]]
+- [[_COMMUNITY_BrowserLaunchOptions|BrowserLaunchOptions]]
 - [[_COMMUNITY_PromptTemplates|PromptTemplates]]
 - [[_COMMUNITY_.get|.get]]
 - [[_COMMUNITY_formats.py|formats.py]]
 - [[_COMMUNITY_llm.py|llm.py]]
 - [[_COMMUNITY_scraper.py|scraper.py]]
 - [[_COMMUNITY_trackit_backend|trackit_backend]]
+- [[_COMMUNITY___init__.py|__init__.py]]
 - [[_COMMUNITY___init__.py|__init__.py]]
 - [[_COMMUNITY_scraper.py|scraper.py]]
 - [[_COMMUNITY_Project Context Blueprint Global AI Opportunity Tracker (Antigravity IDE)|Project Context Blueprint: Global AI Opportunity Tracker (Antigravity IDE)]]
@@ -72,25 +73,22 @@
 - [[_COMMUNITY_agent-progress|agent-progress.md]]
 - [[_COMMUNITY_.parse|.parse]]
 - [[_COMMUNITY_debug_unstop_selectors.py|debug_unstop_selectors.py]]
-- [[_COMMUNITY_LiteLLMClient|LiteLLMClient]]
-- [[_COMMUNITY_LLMManager|LLMManager]]
-- [[_COMMUNITY_scraper.py|scraper.py]]
-- [[_COMMUNITY_._build_token_usage|._build_token_usage]]
+- [[_COMMUNITY_Selector|Selector]]
+- [[_COMMUNITY_OpportunityField|OpportunityField]]
 - [[_COMMUNITY_SelectorProfileValidator|SelectorProfileValidator]]
 - [[_COMMUNITY_debug_unstop_pagination.py|debug_unstop_pagination.py]]
-- [[_COMMUNITY_._dispatch_map|._dispatch_map]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `OpportunityParser` - 35 edges
-2. `BrowserLaunchOptions` - 24 edges
-3. `UnstopScraper` - 24 edges
-4. `SelectorProfile` - 22 edges
-5. `Opportunity` - 22 edges
-6. `SelectorEngine` - 20 edges
-7. `LiteLLMClient` - 20 edges
-8. `BaseScraper` - 19 edges
-9. `LLMProvider` - 18 edges
-10. `BrowserManager` - 17 edges
+1. `OpportunityParser` - 38 edges
+2. `BrowserLaunchOptions` - 29 edges
+3. `SelectorProfile` - 27 edges
+4. `Opportunity` - 25 edges
+5. `UnstopScraper` - 23 edges
+6. `LiteLLMClient` - 23 edges
+7. `BaseScraper` - 21 edges
+8. `DevpostScraper` - 21 edges
+9. `SelectorEngine` - 20 edges
+10. `LLMProvider` - 20 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `ConcreteScraper` --uses--> `BrowserLaunchOptions`  [INFERRED]
@@ -107,23 +105,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (88 total, 13 thin omitted)
+## Communities (85 total, 14 thin omitted)
 
 ### Community 0 - "manager.py"
-Cohesion: 0.13
-Nodes (18): main(), LLM Connectivity Smoke Test.  Run with:     poetry run python examples/llm/test_, Test connectivity for a single LLM provider., Run connectivity test for all configured providers., test_provider(), LLMProvider, Supported LLM providers., ProviderConfig (+10 more)
+Cohesion: 0.07
+Nodes (50): main(), LLM Connectivity Smoke Test.  Run with:     poetry run python examples/llm/te, Test connectivity for a single LLM provider., Run connectivity test for all configured providers., test_provider(), ModelResponse, Initialize DevpostScraper.          Args:             options: Browser launch op, Initialize UnstopScraper.          Args:             options: Browser launch (+42 more)
 
 ### Community 1 - "OpportunityParser"
 Cohesion: 0.14
-Nodes (26): BaseModel, Currency, DifficultyLevel, LocationType, OpportunitySource, OpportunityStatus, OpportunityType, PrizeType (+18 more)
+Nodes (28): BaseModel, Currency, DifficultyLevel, LocationType, OpportunitySource, OpportunityStatus, OpportunityType, PrizeType (+20 more)
 
 ### Community 2 - "ParserUtils"
 Cohesion: 0.05
 Nodes (28): Normalizer, datetime, Prevents instantiation of the Normalizer class., Normalizes a value into a datetime., Normalizes a value into a trimmed, collapsed string., Normalizes various inputs into a clean list of strings., Normalizes a value into a boolean., Normalizes a value into an integer. (+20 more)
 
 ### Community 3 - "Selector"
-Cohesion: 0.13
-Nodes (16): ExtractionResult, Locator, Page, Extract normalized text content from the first matched element., Extract an HTML attribute value from the first matched element., Extract the inner HTML of the first matched element., Extract text from all matched elements as a list., Extract an HTML table as a list of row dicts.          Assumes the first <tr> (+8 more)
+Cohesion: 0.18
+Nodes (9): Locator, Extract normalized text content from the first matched element., Extract an HTML attribute value from the first matched element., Extract the inner HTML of the first matched element., Extract text from all matched elements as a list., Extract an HTML table as a list of row dicts.          Assumes the first <tr>, Extract and return JSON text content (e.g. from <script> tags)., ExtractionField (+1 more)
 
 ### Community 4 - "BaseParser"
 Cohesion: 0.19
@@ -150,8 +148,8 @@ Cohesion: 0.23
 Nodes (7): Page, Cleans up and normalizes the extracted data.          Performs lightweight nor, Orchestrates the extraction of data from a page using a SelectorProfile., Parses the page using the loaded selector profile.          Args:, Validates the selector profile using SelectorProfileValidator., Extract canonical opportunity fields from the page.          Instantiates a Se, SelectorParser
 
 ### Community 10 - "ResponseParser"
-Cohesion: 0.18
-Nodes (10): Any, T, Loads a JSON string into a Python object., Validates parsed JSON against the specified Pydantic model., Generic parser for converting raw LLM responses into validated Pydantic models., Parses a raw LLM response into the specified Pydantic model.          Args:, Convenience method for parsing a SelectorProfile., Removes Markdown code fences from the response. (+2 more)
+Cohesion: 0.13
+Nodes (14): LLMResponseParseError, Raised when the LLM response cannot be parsed., T, Parses an LLM response into the specified Pydantic model., Any, T, Loads a JSON string into a Python object., Validates parsed JSON against the specified Pydantic model. (+6 more)
 
 ### Community 11 - "test_base_scraper.py"
 Cohesion: 0.17
@@ -161,21 +159,17 @@ Nodes (14): ConcreteScraper, Verify goto delegates navigation to the page., Conc
 Cohesion: 0.15
 Nodes (9): Playwright, BrowserContext, Start the Patchright engine., Launch a Chromium browser instance., Create the default browser context., Return the active browser instance.          Raises:             BrowserError, Start Patchright and launch the browser.          Raises:             Browser, Browser (+1 more)
 
-### Community 14 - "PromptTemplates"
-Cohesion: 0.17
-Nodes (9): Loads and saves the Unstop SelectorProfile to a local JSON file.      Keeping th, Load the SelectorProfile from disk.          Returns:             The loaded pro, Save a SelectorProfile to disk.          Args:             profile: The profile, Delete the cached profile, forcing regeneration on the next run., UnstopProfileManager, Represents a complete selector profile for a webpage., SelectorProfile, PromptTemplates (+1 more)
-
-### Community 15 - ".get"
-Cohesion: 0.40
-Nodes (4): Metadata, Any, Convenience accessor for metadata values., Additional metadata collected during scraping.      This model is intentionall
+### Community 31 - "__init__.py"
+Cohesion: 0.09
+Nodes (17): main(), Devpost Scraper End-to-End Runner.  Run with:     poetry run python -m examples., Path, DevpostProfileManager, Handles loading and saving the Devpost SelectorProfile to disk., Initialize DevpostProfileManager.          Args:             file_path: Path to, Load the cached SelectorProfile from disk if it exists.          Returns:, Save a SelectorProfile to disk.          Args:             profile: The validate (+9 more)
 
 ### Community 34 - "__init__.py"
-Cohesion: 0.20
-Nodes (10): ExtractionType, Return selectors ordered by priority (lowest priority int first)., Supported selector locator types., Supported extraction types., Represents a single selector configuration., Return the selector with the highest priority (lowest priority int)., Selector, SelectorType (+2 more)
+Cohesion: 0.24
+Nodes (8): ExtractionHandler, Page, Core extraction engine responsible for executing selector-based extraction., SelectorEngine, ExtractionType, Supported selector locator types., Supported extraction types., SelectorType
 
 ### Community 36 - "scraper.py"
 Cohesion: 0.13
-Nodes (13): main(), Unstop Scraper End-to-End Runner.  Run with:     poetry run python -m examples.s, Locator, Construct the category-filtered listing URL for a given event type.          Exa, Execute the full Unstop scraping pipeline across all target event types., Attempt to dismiss a cookie consent banner if visible., Attempt to dismiss login popup modal if visible., Wait for at least one opportunity card to appear on the page. (+5 more)
+Nodes (13): main(), Unstop Scraper End-to-End Runner.  Run with:     poetry run python -m example, Locator, Construct the category-filtered listing URL for a given event type.          E, Execute the full Unstop scraping pipeline across all target event types., Attempt to dismiss a cookie consent banner if visible., Attempt to dismiss login popup modal if visible., Wait for at least one opportunity card to appear on the page. (+5 more)
 
 ### Community 46 - "Project Context Blueprint: Global AI Opportunity Tracker (Antigravity IDE)"
 Cohesion: 0.22
@@ -254,8 +248,8 @@ Cohesion: 0.29
 Nodes (6): Blocked By, Current Focus, Current Phase, Next Steps, Phase 4: Website Scrapers + LLM-Driven Parsing, Sub-Phase Status
 
 ### Community 68 - "Development Status"
-Cohesion: 0.29
-Nodes (6): 2026-08-16 — Unstop Concrete Scraper Implementation (Phase 4D Baseline), Build Status, Development Status, Last Updated: 2026-08-16, Next Actions, Recent Changes
+Cohesion: 0.22
+Nodes (8): 2026-08-16 — Devpost Concrete Scraper Implementation (Phase 4D Milestone), 2026-08-16 — Unstop Concrete Scraper Implementation (Phase 4D Baseline), 2026-08-16 — Unstop Multi-Category AI Scraper & Pagination Fixes (Phase 4D Baseline), Build Status, Development Status, Last Updated: 2026-08-16, Next Actions, Recent Changes
 
 ### Community 69 - "Phase 5: LLM Pipeline (Advanced)"
 Cohesion: 0.33
@@ -293,45 +287,37 @@ Nodes (4): Active, Backlog, Completed, Task Queue
 Cohesion: 0.27
 Nodes (6): PromptBuilder, Any, Builds a prompt for the given task., Returns the template for the specified task., Formats a template variable before insertion., Builds prompts from predefined templates.
 
-### Community 81 - "LiteLLMClient"
-Cohesion: 0.19
-Nodes (18): LiteLLMClient, Validates an LLM request before execution., Client for interacting with LLM providers using LiteLLM., Generate a response from an LLM provider., LLMAuthenticationError, LLMError, LLMProviderError, LLMRateLimitError (+10 more)
+### Community 81 - "Selector"
+Cohesion: 0.17
+Nodes (8): ExtractionResult, Create a Patchright locator from a Selector definition., Waits for a locator to be visible if the selector requests it., Try each selector in priority order and return the first successful result., Return selectors ordered by priority (lowest priority int first)., Represents a single selector configuration., Return the selector with the highest priority (lowest priority int)., Selector
 
-### Community 82 - "LLMManager"
+### Community 82 - "OpportunityField"
 Cohesion: 0.18
-Nodes (9): Initialize UnstopScraper.          Args:             options: Browser launch opt, LLMManager, T, Parses an LLM response into the specified Pydantic model., Coordinates all LLM operations., Initializes the LLM manager., Generates a selector profile for a webpage., GenerationMetadata (+1 more)
-
-### Community 83 - "scraper.py"
-Cohesion: 0.29
-Nodes (7): Creates and sends an LLM request., LLMRequest, LLMResponse, LLMTask, Represents a request sent to an LLM provider., Supported tasks for LLM operations., Represents a response received from an LLM provider.
-
-### Community 84 - "._build_token_usage"
-Cohesion: 0.40
-Nodes (4): ModelResponse, Builds a TokenUsage object from a LiteLLM response., Represents the token consumption for an LLM request and response., TokenUsage
+Nodes (8): Generates a selector profile for a webpage., GenerationMetadata, Metadata describing how the selector profile was generated., Validator for SelectorProfile models., Validates a SelectorProfile.          Args:             profile: The Selector, SelectorProfileValidator, OpportunityField, Valid field names for selector profiles.      Each member corresponds to a fie
 
 ### Community 85 - "SelectorProfileValidator"
-Cohesion: 0.40
-Nodes (3): Validator for SelectorProfile models., Validates a SelectorProfile.          Args:             profile: The Selector, SelectorProfileValidator
+Cohesion: 0.16
+Nodes (9): Loads and saves the Unstop SelectorProfile to a local JSON file.      Keeping, Load the SelectorProfile from disk.          Returns:             The loaded, Save a SelectorProfile to disk.          Args:             profile: The profi, Delete the cached profile, forcing regeneration on the next run., UnstopProfileManager, Represents a complete selector profile for a webpage., SelectorProfile, PromptTemplates (+1 more)
 
 ## Knowledge Gaps
-- **166 isolated node(s):** `trackit_backend`, `DateFormat`, `LLM`, `Scraper`, `Agent Progress` (+161 more)
+- **168 isolated node(s):** `trackit_backend`, `DateFormat`, `LLM`, `Scraper`, `Agent Progress` (+163 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `OpportunityParser` connect `manager.py` to `OpportunityParser`, `ParserUtils`, `BaseParser`, `scraper.py`, `.get`, `LLMManager`, `scraper.py`?**
-  _High betweenness centrality (0.101) - this node is a cross-community bridge._
-- **Why does `BrowserLaunchOptions` connect `BrowserLaunchOptions` to `OpportunityParser`, `scraper.py`, `BaseScraper`, `test_base_scraper.py`, `.create_context`, `LLMManager`, `scraper.py`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `UnstopScraper` connect `scraper.py` to `manager.py`, `OpportunityParser`, `__init__.py`, `BaseScraper`, `BrowserLaunchOptions`, `SelectorParser`, `PromptTemplates`, `LiteLLMClient`, `LLMManager`, `manager.py`, `scraper.py`?**
-  _High betweenness centrality (0.060) - this node is a cross-community bridge._
-- **Are the 13 inferred relationships involving `OpportunityParser` (e.g. with `BaseParser` and `ParserUtils`) actually correct?**
-  _`OpportunityParser` has 13 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 5 inferred relationships involving `BrowserLaunchOptions` (e.g. with `BrowserFactory` and `BrowserManager`) actually correct?**
-  _`BrowserLaunchOptions` has 5 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 9 inferred relationships involving `UnstopScraper` (e.g. with `BrowserLaunchOptions` and `OpportunityParser`) actually correct?**
-  _`UnstopScraper` has 9 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 7 inferred relationships involving `SelectorProfile` (e.g. with `SelectorParser` and `UnstopProfileManager`) actually correct?**
-  _`SelectorProfile` has 7 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `OpportunityParser` connect `manager.py` to `manager.py`, `OpportunityParser`, `ParserUtils`, `BaseParser`, `scraper.py`, `__init__.py`?**
+  _High betweenness centrality (0.103) - this node is a cross-community bridge._
+- **Why does `BrowserLaunchOptions` connect `BrowserLaunchOptions` to `manager.py`, `OpportunityParser`, `scraper.py`, `BaseScraper`, `test_base_scraper.py`, `.create_context`, `__init__.py`?**
+  _High betweenness centrality (0.069) - this node is a cross-community bridge._
+- **Why does `ParserUtils` connect `ParserUtils` to `OpportunityParser`, `manager.py`?**
+  _High betweenness centrality (0.047) - this node is a cross-community bridge._
+- **Are the 14 inferred relationships involving `OpportunityParser` (e.g. with `BaseParser` and `ParserUtils`) actually correct?**
+  _`OpportunityParser` has 14 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 6 inferred relationships involving `BrowserLaunchOptions` (e.g. with `BrowserFactory` and `BrowserManager`) actually correct?**
+  _`BrowserLaunchOptions` has 6 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 8 inferred relationships involving `SelectorProfile` (e.g. with `SelectorParser` and `DevpostProfileManager`) actually correct?**
+  _`SelectorProfile` has 8 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 13 inferred relationships involving `Opportunity` (e.g. with `OpportunityParser` and `BaseSiteParser`) actually correct?**
+  _`Opportunity` has 13 INFERRED edges - model-reasoned connections that need verification._
