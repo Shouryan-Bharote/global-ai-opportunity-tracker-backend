@@ -39,8 +39,14 @@ class ResponseParser:
 
         start_time = time.perf_counter()
 
-        cleaned = cls._strip_markdown(raw_response)
-        json_str = cls._extract_json(cleaned)
+        stripped = cls._strip_thinking_tags(raw_response)
+        
+        # Try to find and extract a markdown code block first (e.g. ```json ... ```)
+        json_str = cls._extract_markdown_code_block(stripped)
+        if not json_str:
+            cleaned = cls._strip_markdown(stripped)
+            json_str = cls._extract_json(cleaned)
+
         data = cls._load_json(json_str)
         instance = cls._validate(data, model)
 
@@ -58,6 +64,35 @@ class ResponseParser:
     def parse_selector_profile(cls, raw_response: str) -> SelectorProfile:
         """Convenience method for parsing a SelectorProfile."""
         return cls.parse(raw_response, SelectorProfile)
+
+    @staticmethod
+    def _extract_markdown_code_block(text: str) -> str | None:
+        """Finds and extracts the first markdown code block content.
+
+        Prioritizes ```json blocks over other code fences to prevent matching
+        HTML snippets repeated by the LLM.
+        """
+        # First try explicit JSON blocks
+        match = re.search(r"```json\s*(.*?)\s*```", text, flags=re.DOTALL | re.IGNORECASE)
+        if match:
+            return match.group(1).strip()
+            
+        # Fall back to general blocks but avoid matching HTML blocks
+        match = re.search(r"```(?!html|xml|css|javascript|typescript|python)[a-zA-Z]*\s*(.*?)\s*```", text, flags=re.DOTALL | re.IGNORECASE)
+        if match:
+            return match.group(1).strip()
+            
+        return None
+
+    @staticmethod
+    def _strip_thinking_tags(text: str) -> str:
+        """Removes <think>...</think> blocks emitted by reasoning models (e.g. Qwen, DeepSeek-R1).
+
+        These blocks contain the model's chain-of-thought and must be removed
+        before JSON extraction, as they often contain JSON-like fragments that
+        confuse the extractor.
+        """
+        return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
 
     @staticmethod
     def _strip_markdown(text: str) -> str:
@@ -114,6 +149,7 @@ class ResponseParser:
         try:
             return json.loads(json_str)
         except json.JSONDecodeError as exc:
+            logger.error("Failed to decode JSON. json_str: %s", repr(json_str))
             logger.exception("Failed to decode JSON from LLM response.")
             raise LLMResponseParseError(
                 f"Invalid JSON received: {exc}"

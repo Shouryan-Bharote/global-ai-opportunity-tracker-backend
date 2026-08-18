@@ -12,6 +12,7 @@
   "10": "ResponseParser",
   "11": "test_base_scraper.py",
   "12": ".create_context",
+  "13": "BrowserLaunchOptions",
   "14": "PromptTemplates",
   "15": ".get",
   "16": "formats.py",
@@ -79,6 +80,8 @@
   "78": "agent-progress.md",
   "79": ".parse",
   "80": "debug_unstop_selectors.py",
+  "81": "Selector",
+  "82": "OpportunityField",
   "85": "SelectorProfileValidator",
   "86": "debug_unstop_pagination.py"
 }

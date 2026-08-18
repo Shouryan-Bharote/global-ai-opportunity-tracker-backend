@@ -1,3 +1,4 @@
+import asyncio
 import time
 
 import openai
@@ -6,6 +7,7 @@ from litellm.exceptions import (
     APIError,
     AuthenticationError,
     RateLimitError,
+    ServiceUnavailableError,
     Timeout as LiteLLMTimeout,
 )
 
@@ -30,7 +32,40 @@ class LiteLLMClient:
     """Client for interacting with LLM providers using LiteLLM."""
 
     async def generate(self, request: LLMRequest) -> LLMResponse:
-        """Generate a response from an LLM provider."""
+        """Generate a response from an LLM provider.
+
+        Retries automatically on 503 ServiceUnavailable (transient overload) with
+        exponential backoff — up to _MAX_RETRIES attempts.
+        """
+
+        _MAX_RETRIES = 3
+
+        for attempt in range(1, _MAX_RETRIES + 1):
+            try:
+                return await self._generate_once(request)
+            except ServiceUnavailableError as e:
+                if attempt == _MAX_RETRIES:
+                    logger.error(
+                        "Provider unavailable after %d attempts (provider=%s model=%s)",
+                        _MAX_RETRIES,
+                        request.provider.value,
+                        request.model,
+                    )
+                    raise LLMProviderError(f"Service unavailable: {e}") from e
+                wait = 2 ** attempt  # 2s, 4s, 8s
+                logger.warning(
+                    "Provider returned 503 (attempt %d/%d). Retrying in %ds...",
+                    attempt,
+                    _MAX_RETRIES,
+                    wait,
+                )
+                await asyncio.sleep(wait)
+
+        # Should never reach here, but satisfy the type checker
+        raise LLMError("Unexpected retry loop exit")
+
+    async def _generate_once(self, request: LLMRequest) -> LLMResponse:
+        """Execute a single LLM API call (no retry logic)."""
 
         self._validate_request(request)
 
