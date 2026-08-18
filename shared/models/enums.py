@@ -92,6 +92,39 @@ class OpportunitySource(StrEnum):
     TOPCODER = auto()
     OTHER = auto()
 
+
+class OpportunityField(StrEnum):
+    """Valid field names for selector profiles.
+
+    Each member corresponds to a field on the Opportunity model.
+    This enum constrains LLM-generated profiles so they can only
+    reference fields that actually exist in the domain model.
+    """
+
+    TITLE = auto()
+    DESCRIPTION = auto()
+    TYPE = auto()
+    STATUS = auto()
+    ORGANIZER = auto()
+    LOCATION = auto()
+    TIMELINE = auto()
+    DIFFICULTY = auto()
+    TAGS = auto()
+    PRIZES = auto()
+    ELIGIBILITY = auto()
+    TEAM_SIZE_MIN = auto()
+    TEAM_SIZE_MAX = auto()
+    REGISTRATION_FEE = auto()
+    SOURCE = auto()
+    SOURCE_URL = auto()
+    REGISTRATION_URL = auto()
+    RULES_URL = auto()
+    IMAGE_URL = auto()
+    IS_FEATURED = auto()
+    IS_REMOTE_FRIENDLY = auto()
+    NOTES = auto()
+
+
 __all__ = [
     "OpportunityType",
     "OpportunityStatus",
@@ -100,4 +133,5 @@ __all__ = [
     "PrizeType",
     "Currency",
     "OpportunitySource",
+    "OpportunityField",
 ]

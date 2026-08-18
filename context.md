@@ -1,8 +1,8 @@
 # Project Context: Global AI Opportunity Tracker Backend
 
-## Current Phase: Phase 3 (Scraper Framework)
-We are currently starting the implementation of **Phase 3: Scraper Framework**.
-The goal of this phase is to build the abstract base scraper (`BaseScraper`) that orchestrates the browser and page lifecycle and defines the contract for all website-specific scrapers.
+## Current Phase: Phase 4 (Website Scrapers)
+We are currently starting the implementation of **Phase 4: Website Scrapers**.
+The goal of this phase is to build the specific website scrapers (Unstop, Hack2Skill, Devpost, Kaggle) that inherit from `BaseScraper` and implement the extraction logic for each platform.
 
 ## Technology Stack & Guidelines
 - **Language**: Python 3.13+
@@ -16,11 +16,11 @@ The goal of this phase is to build the abstract base scraper (`BaseScraper`) tha
 - [x] **Phase 0: Research and Architecture**
 - [x] **Phase 1: Foundation**
 - [x] **Phase 2: Browser Engine Core**
-- [x] **Phase 3: Scraper Framework** (Current)
+- [x] **Phase 3: Scraper Framework**
   - [x] Implement `BaseScraper` in `scraper/scrapers/base/base_scraper.py`
   - [x] Expose `BaseScraper` in `scraper/scrapers/base/__init__.py`
   - [x] Add unit tests in `tests/scraper/scrapers/test_base_scraper.py`
-- [ ] **Phase 4: Website Scrapers**
+- [ ] **Phase 4: Website Scrapers** (Current)
 - [ ] **Phase 5: LLM Pipeline**
 - [ ] **Phase 6: Exporters**
 - [ ] **Phase 7: Database**

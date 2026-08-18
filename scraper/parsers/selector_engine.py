@@ -3,138 +3,242 @@ from functools import cached_property
 
 from typing import Any, Callable, Coroutine
 from patchright.async_api import Page, Locator
-from shared.llm.selector_profile import ExtractionField, Selector
+from shared.llm.selector_profile import (
+    ExtractionField,
+    ExtractionType,
+    Selector,
+    SelectorType,
+)
 from shared.logger import get_logger
 
+import json
 
 logger = get_logger(__name__)
 
-ExtractionResult = object
+ExtractionResult = str | list[str] | list[dict[str, str]] | None
 
 ExtractionHandler = Callable[
-    [Selector],
+    [ExtractionField, Locator],
     Coroutine[Any, Any, ExtractionResult],
 ]
 
 
-
 class SelectorEngine:
+    """Core extraction engine responsible for executing selector-based extraction.
 
-
-    """
-    Core extraction engine responsible for executing individual selector definitions.
-    
-    The engine dispatches extraction tasks based on the selector type to 
-    specialized internal methods.
+    The engine locates elements on the page using the selectors defined in an
+    ExtractionField, then dispatches the actual data extraction to a handler
+    determined by the field's extraction_type.
     """
 
     def __init__(self, page: Page) -> None:
         self._page = page
 
     @cached_property
-    def _dispatch_map(self) -> dict[str, ExtractionHandler]:
+    def _dispatch_map(self) -> dict[ExtractionType, ExtractionHandler]:
         return {
-            "text": self._extract_text,
-            "attribute": self._extract_attribute,
-            "html": self._extract_html,
-            "elements": self._extract_elements,
-            "json": self._extract_json,
-            "table": self._extract_table,
-            "list": self._extract_list,
+            ExtractionType.TEXT: self._extract_text,
+            ExtractionType.ATTRIBUTE: self._extract_attribute,
+            ExtractionType.HTML: self._extract_html,
+            ExtractionType.LIST: self._extract_list,
+            ExtractionType.TABLE: self._extract_table,
+            ExtractionType.JSON: self._extract_json,
         }
 
-    def _locator(
-        self,
-        selector: Selector,
-    ) -> Locator:
-
+    def _locator(self, selector: Selector) -> Locator:
+        """Create a Patchright locator from a Selector definition."""
+        if selector.type == SelectorType.XPATH:
+            return self._page.locator(f"xpath={selector.value}")
         return self._page.locator(selector.value)
 
-    async def extract(self, selector: Selector) -> object:
+    async def _wait_if_needed(
+        self,
+        locator: Locator,
+        selector: Selector,
+    ) -> None:
+        """Waits for a locator to be visible if the selector requests it."""
+        if selector.wait_for:
+            timeout = selector.timeout or 5000
+            await locator.first.wait_for(state="visible", timeout=timeout)
 
+    async def extract(self, field: ExtractionField) -> ExtractionResult:
+        """Try each selector in priority order and return the first successful result.
 
-        """Executes the extraction for a given selector definition."""
-        logger.debug(
-            "Starting extraction for type=%s, value=%s",
-            selector.type,
-            selector.value,
-        )
+        Args:
+            field: The ExtractionField containing selectors and extraction type.
 
-        handler = self._dispatch_map.get(selector.type)
+        Returns:
+            The extracted value, or None if all selectors fail on an optional field.
+
+        Raises:
+            ValueError: If the extraction type is unsupported.
+            RuntimeError: If all selectors fail on a required field.
+        """
+        handler = self._dispatch_map.get(field.extraction_type)
         if not handler:
-            supported_types = sorted(self._dispatch_map.keys())
+            supported = sorted(t.value for t in self._dispatch_map)
             raise ValueError(
-                f"Unsupported selector type: {selector.type}. "
-                f"Supported selector types: {supported_types}"
+                f"Unsupported extraction type: {field.extraction_type}. "
+                f"Supported types: {supported}"
             )
 
+        last_error: Exception | None = None
+
+        for selector in field.ordered_selectors():
+            logger.debug(
+                "Trying selector type=%s value=%s for field=%s",
+                selector.type,
+                selector.value,
+                field.name,
+            )
+            try:
+                locator = self._locator(selector)
+                await self._wait_if_needed(locator, selector)
+                result = await handler(field, locator)
+
+                if result is not None:
+                    logger.debug(
+                        "Successfully extracted field=%s using selector=%s",
+                        field.name,
+                        selector.value,
+                    )
+                    return result
+
+            except Exception as exc:
+                logger.debug(
+                    "Selector failed for field=%s value=%s: %s",
+                    field.name,
+                    selector.value,
+                    exc,
+                )
+                last_error = exc
+
+        # All selectors exhausted
+        if field.required:
+            raise RuntimeError(
+                f"All selectors failed for required field '{field.name}'."
+            ) from last_error
+
+        logger.debug(
+            "All selectors failed for optional field=%s, using default=%s",
+            field.name,
+            field.default,
+        )
+        return field.default
+
+    # ------------------------------------------------------------------
+    # Extraction handlers
+    # ------------------------------------------------------------------
+
+    async def _extract_text(
+        self,
+        field: ExtractionField,
+        locator: Locator,
+    ) -> str | None:
+        """Extract normalized text content from the first matched element."""
         try:
-            result = await handler(selector)
-            logger.debug("Successfully extracted value for type=%s", selector.type)
-
-            return result
+            raw = await locator.first.text_content(timeout=3000)
         except Exception:
-            logger.exception("Failed to extract value for type=%s", selector.type)
-            raise
+            return None
+        if raw is None:
+            return None
+        text = " ".join(raw.split())
+        return text or None
 
-    async def _extract_text(self, selector: Selector) -> object:
+    async def _extract_attribute(
+        self,
+        field: ExtractionField,
+        locator: Locator,
+    ) -> str | None:
+        """Extract an HTML attribute value from the first matched element."""
+        if not field.attribute:
+            raise ValueError(
+                f"Field '{field.name}' uses ATTRIBUTE extraction but "
+                f"no attribute name is specified."
+            )
+        try:
+            return await locator.first.get_attribute(field.attribute, timeout=3000)
+        except Exception:
+            return None
 
+    async def _extract_html(
+        self,
+        field: ExtractionField,
+        locator: Locator,
+    ) -> str | None:
+        """Extract the inner HTML of the first matched element."""
+        try:
+            html = await locator.first.inner_html(timeout=3000)
+        except Exception:
+            return None
+        return html or None
+
+    async def _extract_list(
+        self,
+        field: ExtractionField,
+        locator: Locator,
+    ) -> list[str]:
+        """Extract text from all matched elements as a list."""
+        try:
+            raw_texts = await locator.all_text_contents()
+            return [" ".join(t.split()) for t in raw_texts if t.strip()]
+        except Exception:
+            return []
+
+    async def _extract_table(
+        self,
+        field: ExtractionField,
+        locator: Locator,
+    ) -> list[dict[str, str]]:
+        """Extract an HTML table as a list of row dicts.
+
+        Assumes the first <tr> (or <thead>) contains header cells and
+        subsequent rows contain data cells.
         """
-        TODO:
-        - Use locator.text_content()
-        - Normalize whitespace
-        - Return None if missing
-        """
-        raise NotImplementedError("Text extraction not implemented yet.")
+        rows = locator.first.locator("tr")
+        row_count = await rows.count()
+        if row_count == 0:
+            return []
 
-    async def _extract_attribute(self, selector: Selector) -> object:
+        # Extract headers from the first row
+        header_cells = rows.nth(0).locator("th, td")
+        header_count = await header_cells.count()
+        headers: list[str] = []
+        for i in range(header_count):
+            text = await header_cells.nth(i).text_content() or ""
+            headers.append(" ".join(text.split()))
 
-        """
+        # Extract data from remaining rows
+        result: list[dict[str, str]] = []
+        for row_idx in range(1, row_count):
+            cells = rows.nth(row_idx).locator("td")
+            cell_count = await cells.count()
+            row_data: dict[str, str] = {}
+            for col_idx in range(min(cell_count, len(headers))):
+                text = await cells.nth(col_idx).text_content() or ""
+                row_data[headers[col_idx]] = " ".join(text.split())
+            result.append(row_data)
 
-        TODO:
-        - Get attribute value from locator
-        - Handle missing attributes
-        """
-        raise NotImplementedError("Attribute extraction not implemented yet.")
+        return result
 
-    async def _extract_html(self, selector: Selector) -> object:
+    async def _extract_json(
+        self,
+        field: ExtractionField,
+        locator: Locator,
+    ) -> str | None:
+        """Extract and return JSON text content (e.g. from <script> tags)."""
+        raw = await locator.first.text_content()
+        if raw is None:
+            return None
 
-        """
-        TODO:
-        - Use locator.inner_html()
-        """
-        raise NotImplementedError("HTML extraction not implemented yet.")
+        # Validate it is parseable JSON and return the raw string
+        try:
+            json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise ValueError(
+                f"Content matched by selector for field '{field.name}' "
+                f"is not valid JSON."
+            ) from exc
 
-    async def _extract_elements(self, selector: Selector) -> object:
+        return raw
 
-        """
-        TODO:
-        - Return list of elements or count
-        """
-        raise NotImplementedError("Element extraction not implemented yet.")
-
-    async def _extract_json(self, selector: Selector) -> object:
-
-        """
-        TODO:
-        - Extract from script tags or JSON-LD
-        """
-        raise NotImplementedError("JSON extraction not implemented yet.")
-
-    async def _extract_table(self, selector: Selector) -> object:
-
-        """
-        TODO:
-        - Parse table elements into list of dicts
-        """
-        raise NotImplementedError("Table extraction not implemented yet.")
-
-    async def _extract_list(self, selector: Selector) -> object:
-
-
-        """
-        TODO:
-        - Iterate over multiple elements
-        - Return collection
-        """
-        raise NotImplementedError("List extraction not implemented yet.")

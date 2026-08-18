@@ -23,16 +23,16 @@ class Providers:
         LLMProvider.GEMINI: ProviderConfig(
             provider=LLMProvider.GEMINI,
             provider_name="gemini",
-            api_key_field="google_ai_api_key",
-            default_model="gemini/gemini-2.5-flash",
-            fallback_model="gemini/gemini-2.5-pro",
+            api_key_field="gemini_api_key",
+            default_model="gemini/gemini-3.6-flash",
+            fallback_model="gemini/gemini-3.5-flash",
         ),
         LLMProvider.GROQ: ProviderConfig(
             provider=LLMProvider.GROQ,
             provider_name="groq",
             api_key_field="groq_api_key",
-            default_model="groq/llama-3.3-70b-versatile",
-            fallback_model="groq/deepseek-r1-distill-llama-70b",
+            default_model="groq/groq/compound-mini",
+            fallback_model="groq/openai/gpt-oss-120b",
         ),
         LLMProvider.OPENROUTER: ProviderConfig(
             provider=LLMProvider.OPENROUTER,
