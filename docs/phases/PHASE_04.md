@@ -32,11 +32,11 @@ Build the concrete website scrapers and the LLM-driven selector profile generati
 - `Normalizer` — whitespace, datetime, boolean normalization
 - `BaseSiteParser` — site-specific parser base
 
-### 4D: Concrete Scrapers (⬜ Not Started)
-- Unstop scraper
-- Hack2Skill scraper
-- Devpost scraper
-- Kaggle scraper
+### 4D: Concrete Scrapers (✅ Completed Baseline)
+- Unstop scraper (`scraper/scrapers/unstop/scraper.py` — multi-category scan, modal overlay dismissal)
+- Devpost scraper (`scraper/scrapers/devpost/scraper.py` — dynamic infinite scroll handling)
+- Hack2Skill scraper (Planned future expansion)
+- Kaggle scraper (Planned future expansion)
 
 ## Key Files
 | File | Purpose |

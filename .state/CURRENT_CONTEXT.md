@@ -21,13 +21,15 @@ Automates the lifecycle of AI-related professional opportunities by scraping web
 - ✅ Foundation (config, logger, constants, models)
 - ✅ Browser Engine (BrowserFactory, BrowserManager, Patchright integration)
 - ✅ Scraper Framework (BaseScraper with async context manager)
-- ✅ LLM Infrastructure (LiteLLMClient, LLMManager, ResponseParser)
+- ✅ LLM Infrastructure (LiteLLMClient with 503 retries, LLMManager with Groq→Gemini fallback, ResponseParser)
 - ✅ Selector Profile system (SelectorProfile, ExtractionField, Selector, OpportunityField)
 - ✅ Parser Pipeline (SelectorEngine, SelectorParser, OpportunityParser, Normalizer)
+- ✅ Concrete Scrapers (Devpost with infinite scroll & Unstop multi-category AI scraper)
 
 ## What's Next
-- ⬜ Concrete website scrapers (Unstop, Hack2Skill, Devpost, Kaggle)
-- ⬜ End-to-end integration testing
+- ⬜ Database Persistence Layer (SQLModel + SQLite / PostgreSQL storage & UPSERT deduplication)
+- ⬜ Parser unit test suite (SelectorEngine, SelectorParser)
+- ⬜ Hack2Skill & Kaggle scrapers (future expansion)
 
 ## Key Rules
 1. **Patchright only** — never use Playwright directly
