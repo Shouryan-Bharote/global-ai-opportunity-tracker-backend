@@ -24,7 +24,7 @@
   - `event_type.rstrip("s")` → `"quizzes"` became `"quizze"` — replaced with `_EVENT_TYPE_MAP` lookup dict.
   - Added return type annotation on `_get_or_generate_profile`.
   - Protocol-relative image URL normalization added.
-
+- **Created** comprehensive project `README.md` document covering architecture, setup, environment configuration, scraper runners, testing, and phase roadmaps.
 
 ## Recent Changes
 
