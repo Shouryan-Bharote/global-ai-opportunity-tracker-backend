@@ -30,10 +30,8 @@ A production-quality, modular backend designed to automate the lifecycle of AI-r
 - **Categories**: Hackathons, Competitions, Conferences, Workshops, Research Programs, Scholarships, and more
 
 ### Current Status
-- **Phase 4** in progress (Website Scrapers + LLM-Driven Parsing)
-- Phases 0–3 completed (Foundation, Browser Engine, Scraper Framework)
-- LLM infrastructure, selector profiles, and parser pipeline implemented
-- Concrete website scrapers are next
+- **Phases 0–5 Completed**: Foundation, Browser Engine, Base Scraper Framework, LLM Infrastructure (Groq primary + Gemini fallback), Selector Profiles & Validation, Parser Pipeline, and Concrete Scrapers (Unstop & Devpost).
+- **Current Focus**: Transitioning from file-based JSON output to persistent database storage (SQLModel).
 
 ### Getting Started
 ```bash

@@ -17,13 +17,10 @@ The goal of this phase is to build the specific website scrapers (Unstop, Hack2S
 - [x] **Phase 1: Foundation**
 - [x] **Phase 2: Browser Engine Core**
 - [x] **Phase 3: Scraper Framework**
-  - [x] Implement `BaseScraper` in `scraper/scrapers/base/base_scraper.py`
-  - [x] Expose `BaseScraper` in `scraper/scrapers/base/__init__.py`
-  - [x] Add unit tests in `tests/scraper/scrapers/test_base_scraper.py`
-- [ ] **Phase 4: Website Scrapers** (Current)
-- [ ] **Phase 5: LLM Pipeline**
-- [ ] **Phase 6: Exporters**
-- [ ] **Phase 7: Database**
+- [x] **Phase 4: Website Scrapers** (Devpost & Unstop operational)
+- [x] **Phase 5: LLM Pipeline** (Groq primary + Gemini fallback, 503 exponential backoff)
+- [x] **Phase 6: Exporters** (JSON file outputs in `scraper/data/outputs/`)
+- [ ] **Phase 7: Database** (Current focus — SQLModel persistence layer)
 - [ ] **Phase 8: Scheduler**
 - [ ] **Phase 9: FastAPI Backend**
 - [ ] **Phase 10: Deployment**
