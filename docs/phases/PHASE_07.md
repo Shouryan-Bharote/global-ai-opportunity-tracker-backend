@@ -1,16 +1,18 @@
 # Phase 7: Database
 
-## Status: ⬜ NOT STARTED
+## Status: ✅ COMPLETED
 
 ## Objective
 Implement persistent storage for scraped opportunities with deduplication and update tracking.
 
-## Planned Work
-- Database schema design for Opportunity storage
-- ORM or query builder integration
-- Deduplication logic (by source_url or composite key)
-- Update detection (has opportunity data changed since last scrape?)
-- Migration system
+## Delivered Work
+- [x] Database schema design for Opportunity storage with SQLModel (`shared/database/models.py`)
+- [x] ORM integration with SQLAlchemy & SQLModel (`shared/database/session.py`)
+- [x] Deduplication logic via UPSERT on unique `source_url` (`shared/database/repository.py`)
+- [x] Update tracking and timestamp management (`created_at`, `updated_at`, `last_scraped_at`)
+- [x] Job run tracking (`JobRun` model and execution logging)
+- [x] Multi-engine support (SQLite for development, PostgreSQL with psycopg2 for production)
 
 ## Dependencies
-- Phase 4 must be complete (Opportunity model finalized)
+- Phase 4 complete (Opportunity model finalized)
+

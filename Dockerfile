@@ -5,14 +5,14 @@ FROM python:3.13-slim-bookworm
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    POETRY_VERSION=2.1.1 \
+    POETRY_VERSION=2.4.1 \
     POETRY_VIRTUALENVS_CREATE=false \
     PATCHRIGHT_BROWSERS_PATH=/ms-playwright \
     PORT=8000
 
 WORKDIR /app
 
-# Install system dependencies needed for PostgreSQL client, curl healthchecks, and browser dependencies
+# Install system dependencies needed for PostgreSQL client, curl healthchecks, and build tooling
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gcc \
@@ -20,22 +20,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Poetry
+# Install Poetry matching local version (2.4.1)
 RUN pip install "poetry==$POETRY_VERSION"
 
 # Copy dependency specifications first to leverage Docker layer caching
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock* /app/
 
-# Install Python dependencies
-RUN poetry install --no-root --no-interaction
-
-# Install Patchright stealth Chromium browser and system dependencies
-RUN python -m patchright install --with-deps chromium
+# Install Python dependencies (with automatic cross-platform lock synchronization fallback)
+RUN poetry install --no-root --no-interaction || (poetry lock --no-update && poetry install --no-root --no-interaction)
 
 # Copy application source code and pre-seeded SQLite database
 COPY . /app
 
-# Ensure non-root permissions for browser and app execution
+# Ensure non-root permissions for outputs and app execution
 RUN mkdir -p /app/scraper/data/outputs && \
     chmod -R 777 /app/scraper/data
 
