@@ -1,0 +1,74 @@
+# ==============================================================================
+# TrackIT — Local Development Docker Compose (SQLite)
+# ==============================================================================
+# SAVE THIS FILE AS:
+#   D:\My Projects\Major Project\backend\global-ai-opportunity-tracker-backend\docker-compose.local.yml
+#
+# Then run from that folder:
+#   docker compose -f docker-compose.local.yml up -d --build   <- start background
+#   docker compose -f docker-compose.local.yml down             <- stop
+#   docker compose -f docker-compose.local.yml logs -f          <- see logs
+# ==============================================================================
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trackit-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./opportunities.db:/app/opportunities.db
+      - ./scraper/data:/app/scraper/data
+    environment:
+      DATABASE_URL: sqlite:////app/opportunities.db
+      APP_NAME: "TrackIT Backend"
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+      HEADLESS: "true"
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      LLM_PROVIDER_CHAIN: ${LLM_PROVIDER_CHAIN:-groq,nvidia,gemini}
+    env_file:
+      - path: .env
+        required: false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trackit-scheduler
+    restart: unless-stopped
+    command: ["python", "-m", "scraper.core.scheduler.job_scheduler", "--scheduler"]
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ./opportunities.db:/app/opportunities.db
+      - ./scraper/data:/app/scraper/data
+    environment:
+      DATABASE_URL: sqlite:////app/opportunities.db
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+      HEADLESS: "true"
+      RUN_MODE: scheduler
+      SCRAPER_CRON_SCHEDULE: ${SCRAPER_CRON_SCHEDULE:-0 2 * * *}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      LLM_PROVIDER_CHAIN: ${LLM_PROVIDER_CHAIN:-groq,nvidia,gemini}
+    env_file:
+      - path: .env
+        required: false

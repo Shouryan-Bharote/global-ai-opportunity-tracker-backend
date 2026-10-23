@@ -1,0 +1,14 @@
+﻿services:
+  - type: web
+    name: trackit-backend
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: APP_NAME
+        value: "TrackIT Backend API"
+      - key: SQLMODEL_DATABASE_URL
+        value: "sqlite:///./opportunities.db"

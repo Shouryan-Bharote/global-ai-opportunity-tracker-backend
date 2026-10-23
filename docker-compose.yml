@@ -1,0 +1,85 @@
+services:
+  # ==========================================
+  # PostgreSQL Database Service
+  # ==========================================
+  db:
+    image: postgres:16-alpine
+    container_name: trackit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-trackit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trackit_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-trackit}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-trackit} -d ${POSTGRES_DB:-trackit}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # FastAPI REST API Service
+  # ==========================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trackit-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-trackit}:${POSTGRES_PASSWORD:-trackit_secret}@db:5432/${POSTGRES_DB:-trackit}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      APP_NAME: "TrackIT Backend"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      LLM_PROVIDER_CHAIN: ${LLM_PROVIDER_CHAIN:-}
+      HEADLESS: "true"
+    env_file:
+      - path: .env
+        required: false
+
+  # ==========================================
+  # Scraper & Scheduler Background Daemon
+  # ==========================================
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trackit-scheduler
+    restart: unless-stopped
+    command: ["python", "-m", "scraper.core.scheduler.job_scheduler", "--scheduler"]
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-trackit}:${POSTGRES_PASSWORD:-trackit_secret}@db:5432/${POSTGRES_DB:-trackit}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      LLM_PROVIDER_CHAIN: ${LLM_PROVIDER_CHAIN:-}
+      HEADLESS: "true"
+      RUN_MODE: "scheduler"
+      SCRAPER_CRON_SCHEDULE: ${SCRAPER_CRON_SCHEDULE:-0 2 * * *}
+    env_file:
+      - path: .env
+        required: false
+
+volumes:
+  pgdata:
+    driver: local

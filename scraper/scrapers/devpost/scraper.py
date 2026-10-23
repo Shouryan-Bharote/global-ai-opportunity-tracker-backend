@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 
+# pyrefly: ignore [missing-import]
 from patchright.async_api import Locator
 
 from scraper.core.browser.models import BrowserLaunchOptions
@@ -17,8 +18,14 @@ from shared.llm.models import LLMProvider
 from shared.llm.providers import Providers
 from shared.llm.selector_profile import SelectorProfile
 from shared.logger import get_logger
-from shared.models.enums import OpportunityField, OpportunitySource
+from shared.models.enums import OpportunityField, OpportunitySource, LocationType
 from shared.models.opportunity import Opportunity
+from shared.models.organizer import Organizer
+from shared.models.location import Location
+from shared.models.timeline import Timeline
+from shared.database.models import OpportunityCreate
+from shared.database.repository import OpportunityRepository
+from shared.database.session import init_db
 
 logger = get_logger(__name__)
 
@@ -79,6 +86,8 @@ class DevpostScraper(BaseScraper):
         self._llm_manager = LLMManager(LiteLLMClient())
         self._profile_manager = DevpostProfileManager()
         self._opportunity_parser = OpportunityParser()
+        self._repository = OpportunityRepository()
+        init_db()  # Ensure DB tables exist before any UPSERT
 
     def _build_target_url(self) -> str:
         """Construct the Devpost AI/ML filtered listing URL."""
@@ -156,9 +165,13 @@ class DevpostScraper(BaseScraper):
                             raw_data["image_url"] = "https:" + img
 
                         opportunity = self._opportunity_parser.parse(raw_data)
+                        opportunity_create = OpportunityCreate.model_validate(
+                            opportunity, from_attributes=True
+                        )
+                        self._repository.upsert_opportunity(opportunity_create)
                         opportunities.append(opportunity)
                         seen_urls.add(source_url)
-                        logger.debug("Parsed Devpost opportunity: %s", opportunity.title)
+                        logger.debug("Parsed and stored Devpost opportunity: %s", opportunity.title)
 
                     except Exception:
                         logger.warning(

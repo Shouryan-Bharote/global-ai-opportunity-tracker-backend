@@ -1,0 +1,41 @@
+# Git & VCS
+.git/
+.gitignore
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE & Tooling
+.vscode/
+.idea/
+.agents/
+graphify-out/
+
+# Local databases & logs
+*.db
+!opportunities.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Scratch HTML & test dumps
+devpost_page.html
+unstop_page.html
+unstop_listing_component.html
+devpost_bottom.png
+Agent_Chat_Export.md
+File tree.md
+proposal.md
+scratch_*.py

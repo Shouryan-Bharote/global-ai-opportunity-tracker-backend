@@ -20,16 +20,40 @@
         },
         {
           "type": "css",
-          "value": "h3.double-wrap",
+          "value": "h2",
           "priority": 2,
+          "confidence": 0.95,
+          "wait_for": false,
+          "timeout": null
+        },
+        {
+          "type": "css",
+          "value": ".double-wrap",
+          "priority": 3,
+          "confidence": 0.92,
+          "wait_for": false,
+          "timeout": null
+        },
+        {
+          "type": "css",
+          "value": ".cptn h3, .cptn h2",
+          "priority": 4,
           "confidence": 0.9,
           "wait_for": false,
           "timeout": null
         },
         {
           "type": "css",
-          "value": "h3[itemprop='name']",
-          "priority": 3,
+          "value": "h3.double-wrap, h2.double-wrap",
+          "priority": 5,
+          "confidence": 0.9,
+          "wait_for": false,
+          "timeout": null
+        },
+        {
+          "type": "css",
+          "value": "[itemprop='name']",
+          "priority": 6,
           "confidence": 0.85,
           "wait_for": false,
           "timeout": null

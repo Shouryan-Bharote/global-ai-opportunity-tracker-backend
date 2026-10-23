@@ -12,11 +12,18 @@ class LLMTask(StrEnum):
 
 
 class LLMProvider(StrEnum):
-    """Supported LLM providers."""
+    """Supported LLM providers.
+
+    Built-in providers (Gemini, Groq, OpenRouter, NVIDIA) are pre-configured.
+    Use CUSTOM for any OpenAI-compatible endpoint (e.g. local Ollama, Together AI,
+    Anyscale, etc.) by supplying CUSTOM_* env vars.
+    """
 
     GEMINI = "gemini"
     GROQ = "groq"
     OPENROUTER = "openrouter"
+    NVIDIA = "nvidia"
+    CUSTOM = "custom"
 
 
 class TokenUsage(BaseModel):

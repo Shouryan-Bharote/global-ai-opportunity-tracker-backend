@@ -84,6 +84,7 @@ class LiteLLMClient:
                 model=request.model,
                 custom_llm_provider=provider_config.provider_name,
                 api_key=Providers.api_key(request.provider),
+                api_base=provider_config.base_url or None,  # NVIDIA / CUSTOM endpoints
                 messages=[
                     {
                         "role": "user",

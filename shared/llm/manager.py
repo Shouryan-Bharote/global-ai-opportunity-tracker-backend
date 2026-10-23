@@ -30,8 +30,8 @@ class LLMManager:
     async def generate_selector_profile(
         self,
         *,
-        provider: LLMProvider,
-        model: str,
+        provider: LLMProvider | None = None,
+        model: str | None = None,
         website: str,
         page_type: str,
         html: str,
@@ -39,8 +39,11 @@ class LLMManager:
     ) -> SelectorProfile:
         """Generates a selector profile for a webpage.
 
-        Tries the given primary provider/model first. If it fails, automatically
-        falls back to Gemini (gemini-3.6-flash) as a secondary provider.
+        Tries providers in the order returned by ``Providers.resolve_chain()``.
+        If *provider* is explicitly given it is tried first (regardless of the
+        chain), then the chain is consulted for fallbacks.
+
+        Raises ``LLMError`` only when every provider in the chain has failed.
         """
 
         logger.info(
@@ -57,57 +60,64 @@ class LLMManager:
             fields=fields,
         )
 
-        # --- Primary attempt (Groq by default) ---
-        response: LLMResponse | None = None
-        used_provider = provider
-        used_model = model
+        # Build the ordered list of (provider, model) pairs to attempt
+        chain = Providers.resolve_chain()
 
-        try:
-            response = await self._execute_request(
-                task=LLMTask.SELECTOR_GENERATION,
-                prompt=prompt,
-                provider=provider,
-                model=model,
+        if not chain:
+            raise LLMError(
+                "No LLM provider is configured. "
+                "Set at least one API key (GROQ_API_KEY, GEMINI_API_KEY, "
+                "OPENROUTER_API_KEY, NVIDIA_API_KEY, or CUSTOM_API_KEY) in .env."
             )
-        except LLMError as primary_exc:
-            # --- Fallback to Gemini if primary is not already Gemini ---
-            fallback_provider = LLMProvider.GEMINI
-            fallback_model = Providers.default_model(fallback_provider)
 
-            if provider == fallback_provider:
-                # Already on Gemini — no further fallback available
-                raise
+        # If caller specified an explicit provider, put it first (deduplicated)
+        if provider is not None and provider in chain:
+            chain = [provider] + [p for p in chain if p != provider]
+        elif provider is not None and Providers.has_api_key(provider):
+            chain = [provider] + chain
 
-            logger.warning(
-                "Primary LLM provider %s failed (%s). Falling back to %s (%s).",
-                provider.value,
-                primary_exc,
-                fallback_provider.value,
-                fallback_model,
+        response: LLMResponse | None = None
+        used_provider: LLMProvider | None = None
+        used_model: str | None = None
+        last_exc: Exception | None = None
+
+        for attempt_provider in chain:
+            attempt_model = (
+                model
+                if (model and attempt_provider == provider)
+                else Providers.default_model(attempt_provider)
             )
 
             try:
                 response = await self._execute_request(
                     task=LLMTask.SELECTOR_GENERATION,
                     prompt=prompt,
-                    provider=fallback_provider,
-                    model=fallback_model,
+                    provider=attempt_provider,
+                    model=attempt_model,
                 )
-                used_provider = fallback_provider
-                used_model = fallback_model
-            except LLMError as fallback_exc:
-                raise LLMError(
-                    f"Both primary ({provider.value}) and fallback ({fallback_provider.value}) "
-                    f"providers failed. Last error: {fallback_exc}"
-                ) from fallback_exc
+                used_provider = attempt_provider
+                used_model = attempt_model
+                break  # Success — stop trying
 
-        if not response or not response.content.strip():
+            except LLMError as exc:
+                logger.warning(
+                    "Provider %s (%s) failed: %s. Trying next in chain...",
+                    attempt_provider.value,
+                    attempt_model,
+                    exc,
+                )
+                last_exc = exc
+                continue
+
+        if response is None or not response.content.strip():
+            if last_exc is not None:
+                raise LLMError(
+                    f"All {len(chain)} provider(s) in the chain failed. "
+                    f"Last error: {last_exc}"
+                ) from last_exc
             raise LLMValidationError("LLM returned an empty response.")
 
-        profile = self._parse_response(
-            response.content,
-            SelectorProfile,
-        )
+        profile = self._parse_response(response.content, SelectorProfile)
 
         SelectorProfileValidator.validate(profile)
 

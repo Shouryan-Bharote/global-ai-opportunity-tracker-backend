@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 
+# pyrefly: ignore [missing-import]
 from patchright.async_api import Locator
 
 from scraper.core.browser.models import BrowserLaunchOptions
@@ -19,6 +20,9 @@ from shared.llm.selector_profile import SelectorProfile
 from shared.logger import get_logger
 from shared.models.enums import OpportunityField, OpportunitySource
 from shared.models.opportunity import Opportunity
+from shared.database.models import OpportunityCreate
+from shared.database.repository import OpportunityRepository
+from shared.database.session import init_db
 
 logger = get_logger(__name__)
 
@@ -121,6 +125,8 @@ class UnstopScraper(BaseScraper):
         self._llm_manager = LLMManager(LiteLLMClient())
         self._profile_manager = UnstopProfileManager()
         self._opportunity_parser = OpportunityParser()
+        self._repository = OpportunityRepository()
+        init_db()  # Ensure DB tables exist before any UPSERT
 
     def _build_target_url(self, event_type: str) -> str:
         """Construct the category-filtered listing URL for a given event type.
@@ -194,11 +200,14 @@ class UnstopScraper(BaseScraper):
                             raw_data.setdefault("organizer", {"name": "Unstop"})
                             raw_data.setdefault("location", {"type": "online"})
                             raw_data.setdefault("timeline", {})
-
                             opportunity = self._opportunity_parser.parse(raw_data)
+                            opportunity_create = OpportunityCreate.model_validate(
+                                opportunity, from_attributes=True
+                            )
+                            self._repository.upsert_opportunity(opportunity_create)
                             opportunities.append(opportunity)
                             seen_urls.add(source_url)
-                            logger.debug("Parsed opportunity: %s", opportunity.title)
+                            logger.debug("Parsed and stored opportunity: %s", opportunity.title)
 
                         except Exception:
                             logger.warning(
